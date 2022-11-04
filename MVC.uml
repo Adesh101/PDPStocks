@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/adesh/OneDrive/Desktop/PDP/Stocks/src</OriginalElement>
+  <nodes>
+    <node x="-85.68553459119497" y="-79.9802336028751">Controller.actions.showAmountOfPortfolioByDate</node>
+    <node x="744.9433962264151" y="184.07367475292">Model.Stocks.fetchStockData</node>
+    <node x="53.314465408805034" y="281.5031446540881">Controller.Controller</node>
+    <node x="-124.0" y="217.0">Model.Operation.Operation</node>
+    <node x="199.0" y="138.0">Model.Portfolio.IPortfolio</node>
+    <node x="238.14734950584005" y="-79.9802336028751">Controller.actions.showComposition</node>
+    <node x="324.90026954177904" y="299.6504941599281">Model.Stocks.Stocks</node>
+    <node x="-126.0" y="40.09344115004495">Model.Operation.IOperation</node>
+    <node x="611.199460916442" y="-79.9802336028751">Controller.actions.showExistingPortfolios</node>
+    <node x="954.0" y="-26.278526504941595">Controller.actions.addStockToPortfolio</node>
+    <node x="446.93553459119494" y="-171.6504941599281">Controller.actions.IActions</node>
+    <node x="532.7070979335131" y="266.5292003593891">View.View</node>
+    <node x="584.8436657681941" y="109.20395327942498">View.IView</node>
+    <node x="24.329739442946988" y="94.23000898472594">Controller.IController</node>
+    <node x="393.16262353998206" y="138.0">Model.Stocks.IStocks</node>
+    <node x="332.0" y="64.0">Controller.actions.createNewPortfolioCSV</node>
+    <node x="947.4618149146451" y="94.23000898472594">MVCStocks</node>
+    <node x="815.0" y="-190.5570530098832">Controller.actions.createNewPortfolio</node>
+    <node x="165.292902066487" y="355.9802336028751">Model.Portfolio.Portfolio</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Controller.actions.showAmountOfPortfolioByDate" target="Controller.actions.IActions" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="40.314465408805034" y="39.0" />
+      <point x="497.93553459119494" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Controller.actions.addStockToPortfolio" target="Controller.actions.IActions" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="1045.0" y="39.0" />
+      <point x="497.93553459119494" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Controller.actions.createNewPortfolioCSV" target="Controller.actions.IActions" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="430.5" y="39.0" />
+      <point x="497.93553459119494" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Model.Stocks.Stocks" target="Model.Stocks.IStocks" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="370.90026954177904" y="192.0" />
+      <point x="441.16262353998206" y="192.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Controller.Controller" target="Controller.IController" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="109.81446540880503" y="192.0" />
+      <point x="82.82973944294699" y="192.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Controller.actions.createNewPortfolio" target="Controller.actions.IActions" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="900.5" y="39.0" />
+      <point x="497.93553459119494" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Model.Portfolio.Portfolio" target="Model.Portfolio.IPortfolio" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="218.292902066487" y="192.0" />
+      <point x="254.0" y="192.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Model.Operation.Operation" target="Model.Operation.IOperation" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="View.View" target="View.IView" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="572.7070979335131" y="192.0" />
+      <point x="626.8436657681941" y="192.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Controller.actions.showComposition" target="Controller.actions.IActions" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="321.14734950584005" y="39.0" />
+      <point x="497.93553459119494" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="Controller.actions.showExistingPortfolios" target="Controller.actions.IActions" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="708.199460916442" y="39.0" />
+      <point x="497.93553459119494" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.8681747269890796" showDependencies="false" x="505.0" y="115.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

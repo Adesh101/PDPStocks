@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/adesh/OneDrive/Desktop/PDP/Stocks/src/model</OriginalElement>
+  <nodes>
+    <node x="88.0" y="-15.0">model.stocks.IStocks</node>
+    <node x="-75.0" y="138.0">model.stocks.FetchStockData</node>
+    <node x="90.0" y="64.0">model.stocks.Stocks</node>
+    <node x="-73.0" y="64.0">model.operation.Operation</node>
+    <node x="-75.0" y="-15.0">model.operation.IOperation</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="model.operation.Operation" target="model.operation.IOperation" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="model.stocks.Stocks" target="model.stocks.IStocks" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="54.5" y="76.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

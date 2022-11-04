@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/adesh/OneDrive/Desktop/PDP/Stocks/src/view</OriginalElement>
+  <nodes>
+    <node x="-42.0" y="-15.0">view.IView</node>
+    <node x="-40.0" y="64.0">view.View</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="view.View" target="view.IView" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="0.0" y="39.0" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

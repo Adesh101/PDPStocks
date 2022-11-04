@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/adesh/OneDrive/Desktop/PDP/Stocks/src/controller</OriginalElement>
+  <nodes>
+    <node x="-127.0" y="64.0">controller.actions.ShowComposition</node>
+    <node x="699.0" y="64.0">controller.actions.CreateNewPortfolio</node>
+    <node x="-127.0" y="138.0">controller.IController</node>
+    <node x="280.00000000000006" y="64.0">controller.actions.ShowExistingPortfolios</node>
+    <node x="893.0" y="64.0">controller.actions.ShowAmountOfPortfolioByDate</node>
+    <node x="61.00000000000006" y="64.0">controller.actions.CreateNewPortfolioCSV</node>
+    <node x="431.25" y="-15.0">controller.actions.IActions</node>
+    <node x="495.0" y="64.0">controller.actions.AddStockToPortfolio</node>
+    <node x="-125.0" y="217.0">controller.Controller</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="controller.actions.CreateNewPortfolio" target="controller.actions.IActions" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="786.0" y="39.0" />
+      <point x="482.25" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controller.actions.ShowAmountOfPortfolioByDate" target="controller.actions.IActions" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="1020.0" y="39.0" />
+      <point x="482.25" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controller.actions.CreateNewPortfolioCSV" target="controller.actions.IActions" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="160.50000000000006" y="39.0" />
+      <point x="482.25" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controller.actions.AddStockToPortfolio" target="controller.actions.IActions" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="587.0" y="39.0" />
+      <point x="482.25" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controller.actions.ShowExistingPortfolios" target="controller.actions.IActions" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="377.50000000000006" y="39.0" />
+      <point x="482.25" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controller.actions.ShowComposition" target="controller.actions.IActions" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="-43.0" y="39.0" />
+      <point x="482.25" y="39.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="controller.Controller" target="controller.IController" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.8601236476043277" showDependencies="false" x="510.0" y="115.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
