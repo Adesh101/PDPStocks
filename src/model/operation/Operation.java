@@ -1,5 +1,6 @@
 package model.operation;
 
+import model.filehandling.csvFiles;
 import model.stocks.IStocks;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -7,9 +8,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +16,10 @@ import java.util.List;
  * This class contains all the major methods that are required for the stock software.
  */
 public class Operation implements IOperation {
-
   protected HashMap<String, HashMap<String, List<String>>> portfolios
       = new HashMap<String, HashMap<String, List<String>>>();
   protected String portfolioName;
+  csvFiles files = new csvFiles();
   protected double totalValue;
   protected IStocks stocks;
   private static final String CSV_SEPARATOR = ",";
@@ -93,16 +91,15 @@ public class Operation implements IOperation {
     }
     return allPortfolios.toString();
   }
-
-  @Override
-  public double getCurrentPrice(String ticker) {
-    return stocks.getStockCurrentPrice(ticker);
-  }
+//
+//  @Override
+//  public double getCurrentPrice(String ticker) {
+//    return stocks.getStockCurrentPrice(ticker);
+//  }
 
   @Override
   public boolean isTickerValid(String ticker) {
-    String[] stockData = stocks.callStockAPI(ticker);
-    return stockData.length != 1;
+    return files.isTickerValid(ticker);
   }
 
   @Override
@@ -182,17 +179,17 @@ public class Operation implements IOperation {
     return this.portfolios;
   }
 
-  @Override
-  public double callStockAPIByDateHelper(HashMap<String, List<String>> map, String date) {
-    double currentValue = 0;
-    for (String string : map.keySet()) {
-      stocks.callStockAPIByDate(string, date);
-      double tempValue = stocks.getStockCurrentPriceByDate(string);
-      tempValue *= Double.parseDouble(map.get(string).get(0));
-      currentValue += tempValue;
-    }
-    return currentValue;
-  }
+//  @Override
+//  public double callStockAPIByDateHelper(HashMap<String, List<String>> map, String date) {
+//    double currentValue = 0;
+//    for (String string : map.keySet()) {
+//      stocks.callStockAPIByDate(string, date);
+//      double tempValue = stocks.getStockCurrentPriceByDate(string);
+//      tempValue *= Double.parseDouble(map.get(string).get(0));
+//      currentValue += tempValue;
+//    }
+//    return currentValue;
+//  }
 
 
   @Override
@@ -223,21 +220,27 @@ public class Operation implements IOperation {
 
   @Override
   public double getPortfolioByDate(String portfolioName, String date) {
+    date = stocks.isWeekend(date);
     HashMap<String, List<String>> map = new HashMap<String, List<String>>();
     String dateFormat = "yyyy-MM-dd";
-    try {
-      DateFormat df = new SimpleDateFormat(dateFormat);
-      df.setLenient(false);
-      df.parse(date);
-      double totalValueByDate = 0;
+//    try {
+//      DateFormat df = new SimpleDateFormat(dateFormat);
+//      df.setLenient(false);
+//      df.parse(date);
+//      double totalValueByDate = 0;
       for (String string : this.portfolios.get(portfolioName).keySet()) {
         map.put(string, new ArrayList<>());
         map.get(string).add(portfolios.get(portfolioName).get(string).get(0));
       }
-      double finalValue = callStockAPIByDateHelper(map, date);
+      double finalValue = 0;//callStockAPIByDateHelper(map, date);
       return finalValue;
-    } catch (ParseException e) {
-      throw new IllegalArgumentException("ENTER DATE IN YYYY-MM-DD FORMAT");
-    }
+//    } catch (ParseException e) {
+//      throw new IllegalArgumentException("ENTER DATE IN YYYY-MM-DD FORMAT");
+//    }
+  }
+
+  @Override
+  public String[] callStockAPI(String ticker,  String date) {
+    return stocks.callStockAPI(ticker, date);
   }
 }

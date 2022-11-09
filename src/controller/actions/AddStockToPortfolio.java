@@ -6,7 +6,6 @@ import model.operation.IOperation;
  * This class executes the function that will add stocks to a particular portfolio.
  */
 public class AddStockToPortfolio implements IActions {
-
   String portfolioName;
   int quantity;
   String ticker;
@@ -29,7 +28,7 @@ public class AddStockToPortfolio implements IActions {
   public String operate(IOperation operation) {
     if (operation.checkPortfolioAlreadyExists(this.portfolioName)) {
       if (operation.isTickerValid(this.ticker)) {
-        this.price = operation.getCurrentPrice(this.ticker);
+        this.price = Double.parseDouble(operation.callStockAPI(this.ticker, "")[3]);//operation.getCurrentPrice(this.ticker);
         operation.addStockToPortfolio(this.portfolioName, this.ticker, this.quantity, this.price);
         return "STOCK " + this.ticker + " WITH QUANTITY " + this.quantity + " ADDED TO "
             + this.portfolioName + " PORTFOLIO.";

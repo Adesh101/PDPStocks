@@ -37,12 +37,12 @@ public interface IOperation {
    */
   int getMapSize(String portfolioName);
 
-  /**
-   * A method that gives the current price of the stock.
-   * @return:  the price in double
-   * @param: ticker symbol of the stock whose price needs to be fetched
-   */
-  double getCurrentPrice(String ticker);
+//  /**
+//   * A method that gives the current price of the stock.
+//   * @return:  the price in double
+//   * @param: ticker symbol of the stock whose price needs to be fetched
+//   */
+//  double getCurrentPrice(String ticker);
 
   /**
    * A method to check whether a portfolio already exists.
@@ -83,13 +83,13 @@ public interface IOperation {
    */
   HashMap<String, HashMap<String, List<String>>> getPortfolioMap();
 
-  /**
-   * A method to fetch a particular portfolio value on a given date.
-   * @param: map
-   * @param: date
-   * @return: value of portfolio
-   */
-  double callStockAPIByDateHelper(HashMap<String, List<String>> map, String date);
+//  /**
+//   * A method to fetch a particular portfolio value on a given date.
+//   * @param: map
+//   * @param: date
+//   * @return: value of portfolio
+//   */
+//  double callStockAPIByDateHelper(HashMap<String, List<String>> map, String date);
 
   /**
    * Fetches the data of a particular portfolio.
@@ -105,4 +105,6 @@ public interface IOperation {
    * @return: total value of portfolio
    */
   double getPortfolioByDate(String portfolioName, String date);
+
+  String[] callStockAPI(String ticker, String date);
 }

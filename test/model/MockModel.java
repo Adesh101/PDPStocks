@@ -38,11 +38,11 @@ public class MockModel implements IOperation {
     return 0;
   }
 
-  @Override
-  public double getCurrentPrice(String ticker) {
-    log.append("TICKER: " + ticker + "\n");
-    return 0;
-  }
+//  @Override
+//  public double getCurrentPrice(String ticker) {
+//    log.append("TICKER: " + ticker + "\n");
+//    return 0;
+//  }
 
   @Override
   public boolean checkPortfolioAlreadyExists(String name) {
@@ -79,11 +79,11 @@ public class MockModel implements IOperation {
     return null;
   }
 
-  @Override
-  public double callStockAPIByDateHelper(HashMap<String, List<String>> map, String date) {
-    log.append("MAP: " + map + " " + "DATE: " + date + "\n");
-    return 0;
-  }
+//  @Override
+//  public double callStockAPIByDateHelper(HashMap<String, List<String>> map, String date) {
+//    log.append("MAP: " + map + " " + "DATE: " + date + "\n");
+//    return 0;
+//  }
 
   @Override
   public String getPortfolioComposition(String portfolioName) {
@@ -95,5 +95,10 @@ public class MockModel implements IOperation {
   public double getPortfolioByDate(String portfolioName, String date) {
     log.append("PORTFOLIO NAME: " + portfolioName + " " + " DATE: " + date + "\n");
     return 0;
+  }
+
+  @Override
+  public String[] callStockAPI(String ticker, String date) {
+    return new String[0];
   }
 }

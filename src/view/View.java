@@ -134,10 +134,12 @@ public class View implements IView {
       displayInput("ENTER STOCK QUANTITY:");
       String quantity = nextInput();
       try {
+        if(Integer.parseInt(quantity) < 0)
+          throw new NumberFormatException();
         int quantityInt = Math.round(Float.parseFloat(quantity));
         return quantityInt;
       } catch (NumberFormatException ex) {
-        displayInput("STOCK QUANTITY SHOULD BE WHOLE NUMBERS ONLY.");
+        displayInput("STOCK QUANTITY SHOULD BE POSITIVE WHOLE NUMBERS ONLY.");
       }
     }
   }
