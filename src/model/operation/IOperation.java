@@ -107,4 +107,6 @@ public interface IOperation {
   double getPortfolioByDate(String portfolioName, String date);
 
   String[] callStockAPI(String ticker, String date);
+  void createFlexiblePortfolio(String portfolioName);
+  void createLockedPortfolio(String portfolioName);
 }

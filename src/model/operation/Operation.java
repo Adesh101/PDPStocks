@@ -1,6 +1,9 @@
 package model.operation;
 
 import model.filehandling.csvFiles;
+import model.portfolio.FlexiblePortfolio;
+import model.portfolio.IPortfolio;
+import model.portfolio.InflexiblePortfolio;
 import model.stocks.IStocks;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,6 +25,7 @@ public class Operation implements IOperation {
   csvFiles files = new csvFiles();
   protected double totalValue;
   protected IStocks stocks;
+  protected IPortfolio portfolio;
   private static final String CSV_SEPARATOR = ",";
 
 
@@ -242,5 +246,19 @@ public class Operation implements IOperation {
   @Override
   public String[] callStockAPI(String ticker,  String date) {
     return stocks.callStockAPI(ticker, date);
+  }
+
+  @Override
+  public void createFlexiblePortfolio(String portfolioName) {
+    this.portfolioName=portfolioName;
+    portfolio = new FlexiblePortfolio();
+    portfolio.createPortfolio(portfolioName);
+  }
+
+  @Override
+  public void createLockedPortfolio(String portfolioName) {
+    this.portfolioName=portfolioName;
+    portfolio = new InflexiblePortfolio();
+    portfolio.createPortfolio(portfolioName);
   }
 }

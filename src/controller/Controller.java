@@ -1,5 +1,6 @@
 package controller;
 
+import controller.actions.CreateFlexiblePortfolio;
 import controller.actions.IActions;
 import controller.actions.AddStockToPortfolio;
 import controller.actions.CreateNewPortfolio;
@@ -8,6 +9,7 @@ import controller.actions.ShowAmountOfPortfolioByDate;
 import controller.actions.ShowComposition;
 import controller.actions.ShowExistingPortfolios;
 import model.operation.IOperation;
+import model.portfolio.IPortfolio;
 import view.IView;
 
 /**
@@ -56,6 +58,7 @@ public class Controller implements IController {
         try {
           switch (menuOption) {
             case "1":
+
               String option = view.showPortfolioMenuOption();
               if (option.equals("1")) {
                 action = new CreateNewPortfolio(view.showEnterNewPortfolioName());
@@ -106,6 +109,26 @@ public class Controller implements IController {
               view.showMenu();
               menuOption = view.fetchInput();
               break;
+//            case "6":
+//              option = view.showPortfolioMenuOption();
+//              if (option.equals("1")) {
+//                action = new CreateNewPortfolio(view.showEnterNewPortfolioName());
+//                view.displayInput(action.operate(operation));
+//              } else if (option.equals("2")) {
+//                String fileName = view.showFileName();
+//                action = new CreateNewPortfolioCSV(fileName);
+//                view.displayInput(action.operate(operation));//;
+//              }
+//              // show composition
+//              action = new ShowComposition(view.showEnterNewPortfolioName());
+//              view.displayInput(action.operate(operation));
+//              view.showMenu();
+//              menuOption = view.fetchInput();
+//              flag = false;
+//              break;
+
+
+
             case "6":
               flag = true;
               break;

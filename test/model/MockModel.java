@@ -101,4 +101,14 @@ public class MockModel implements IOperation {
   public String[] callStockAPI(String ticker, String date) {
     return new String[0];
   }
+
+  @Override
+  public void createFlexiblePortfolio(String portfolioName) {
+
+  }
+
+  @Override
+  public void createLockedPortfolio(String portfolioName) {
+
+  }
 }
