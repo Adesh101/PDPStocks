@@ -1,5 +1,6 @@
 package model.operation;
 
+import java.util.Date;
 import model.filehandling.csvFiles;
 import model.stocks.IStocks;
 import java.io.BufferedReader;
@@ -221,19 +222,16 @@ public class Operation implements IOperation {
   @Override
   public double getPortfolioByDate(String portfolioName, String date) {
     date = stocks.isWeekend(date);
-    HashMap<String, List<String>> map = new HashMap<String, List<String>>();
-    String dateFormat = "yyyy-MM-dd";
-//    try {
-//      DateFormat df = new SimpleDateFormat(dateFormat);
-//      df.setLenient(false);
-//      df.parse(date);
-//      double totalValueByDate = 0;
-      for (String string : this.portfolios.get(portfolioName).keySet()) {
-        map.put(string, new ArrayList<>());
-        map.get(string).add(portfolios.get(portfolioName).get(string).get(0));
-      }
-      double finalValue = 0;//callStockAPIByDateHelper(map, date);
-      return finalValue;
+    double individualValue = 0, finalValue = 0;
+    int quantity = 0;
+    //HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+    for (String string : this.portfolios.get(portfolioName).keySet()) {
+      individualValue = stocks.getPriceByDate(string, date);
+      quantity = Integer.parseInt(portfolios.get(portfolioName).get(string).get(0));
+      finalValue = finalValue + individualValue*quantity;
+    }
+    //callStockAPI(map, date);
+    return finalValue;
 //    } catch (ParseException e) {
 //      throw new IllegalArgumentException("ENTER DATE IN YYYY-MM-DD FORMAT");
 //    }
@@ -242,5 +240,10 @@ public class Operation implements IOperation {
   @Override
   public String[] callStockAPI(String ticker,  String date) {
     return stocks.callStockAPI(ticker, date);
+  }
+
+  @Override
+  public Date yesterdaysDate() {
+    return new Date(System.currentTimeMillis()-24*60*60*1000);
   }
 }

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import model.operation.IOperation;
@@ -100,5 +101,10 @@ public class MockModel implements IOperation {
   @Override
   public String[] callStockAPI(String ticker, String date) {
     return new String[0];
+  }
+
+  @Override
+  public Date yesterdaysDate() {
+    return null;
   }
 }

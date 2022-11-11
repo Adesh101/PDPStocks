@@ -15,6 +15,8 @@ public interface IStocks {
 
   void updateFile(String file);
 
+  double getPriceByDate(String ticker, String date);
+
 //
 //  /**
 //   * This method will fetch the current price for a particular ticker.

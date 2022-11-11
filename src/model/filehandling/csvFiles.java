@@ -10,7 +10,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +18,6 @@ public class csvFiles implements fileHandling {
 
   @Override
   public boolean checkLocalData(String ticker) {
-    //Currently, just checking for file, will see how to check for date as well
     try {
       BufferedReader br = new BufferedReader(new FileReader("./data/" + ticker + ".csv"));
     } catch (Exception ex) {
@@ -36,16 +34,19 @@ public class csvFiles implements fileHandling {
     try {
       BufferedReader br = new BufferedReader(new FileReader("./data/" + ticker + ".csv"));
       while((line = br.readLine()) != null) {
-        if (line.contains(date)) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date dt = sdf.parse(date);
+        sdf.applyPattern("dd-MM-yyyy");
+        String difDate = sdf.format(dt);
+        if (line.contains(date) || line.contains(difDate)) {
           tempData = line.split(splitBy);
           break;
         }
       }
-      return tempData;
     } catch (Exception ex) {
       System.out.println(ex.getMessage());;
     }
-    return new String[0];
+    return tempData;
   }
 
   @Override
@@ -81,31 +82,15 @@ public class csvFiles implements fileHandling {
 
   @Override
   public void updateFile(String file, String data) {
-    // Path of file
     Path path = Paths.get("./data/" + file + ".csv");
-    // Read all lines
     List<String> lines = null;
     try {
       lines = Files.readAllLines(path, StandardCharsets.UTF_8);
       lines.add(1, data);
-      //lines.set(2, data);
       Files.write(path, lines, StandardCharsets.UTF_8);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-
-//    String line = "";
-//    try {
-//      BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
-//          new FileOutputStream(file, true), "UTF-8"));
-//      StringBuffer oneLine = new StringBuffer();
-//      oneLine.append(data);
-//      bw.write(oneLine.toString());
-//      bw.flush();
-//      bw.close();
-//    } catch (IOException e) {
-//      System.out.println("");
-//    }
   }
 
   @Override
