@@ -7,4 +7,5 @@ public interface fileHandling {
   boolean isTickerValid(String ticker);
   void updateFile(String file, String data);
   String getMostRecentDate(String file);
+  boolean checkIfRecentDateIsCurrentDate(String date);
 }

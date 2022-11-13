@@ -10,7 +10,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -107,13 +109,38 @@ public class csvFiles implements fileHandling {
             Date dt = sdf.parse(date);
             sdf.applyPattern("yyyy-MM-dd");
             return sdf.format(dt);
+          } else {
+            break;
           }
         }
       }
-      return date;
     } catch (Exception ex) {
       System.out.println(ex.getMessage());;
     }
-    return currentLine;
+    return date;
+  }
+
+  @Override
+  public boolean checkIfRecentDateIsCurrentDate(String date) {
+    Calendar cal1 = Calendar.getInstance();
+    Calendar cal2 = Calendar.getInstance();
+    Date currDate = new Date(System.currentTimeMillis());
+    cal1.setTime(currDate);
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+    try {
+      cal2.setTime(sdf.parse(date));
+    } catch (ParseException e) {
+      return false;
+    }
+
+    if (cal1.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+      cal1.setTime(new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000)));
+    } else if (cal1.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+      cal1.setTime(new Date(System.currentTimeMillis() - (2 * 24 * 60 * 60 * 1000)));
+    }
+
+    return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+        cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
   }
 }
