@@ -68,4 +68,5 @@ public interface IView {
   String showInflexiblePortfolioMenu();
   String showPortfolioTypeMenu();
   String showSellConfirmation();
+  double showCommissionFee();
 }

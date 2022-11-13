@@ -25,8 +25,8 @@ public class Operation implements IOperation {
       = new HashMap<String, HashMap<String, List<String>>>();
   protected String portfolioName;
   csvFiles files = new csvFiles();
-  protected HashMap<String, HashMap<String, List<String>>> FlexibleMap
-      = new HashMap<String, HashMap<String, List<String>>>();
+  protected HashMap<String, HashMap<String, HashMap<String, List<String>>>> FlexibleMap
+      = new HashMap<String, HashMap<String, HashMap<String, List<String>>>>();
   protected HashMap<String, HashMap<String, List<String>>> InflexibleMap
       = new HashMap<String, HashMap<String, List<String>>>();
   protected double totalValue;

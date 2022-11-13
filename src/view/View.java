@@ -174,6 +174,23 @@ public class View implements IView {
   }
 
   @Override
+  public double showCommissionFee() {
+    String fee="";
+    while (true) {
+      displayInput("ENTER COMMISSION FEE:");
+      fee = nextInput();
+      try {
+        if(Double.parseDouble(fee)<0)
+          throw new IllegalArgumentException();
+        return Double.parseDouble(fee);
+      } catch (IllegalArgumentException ex) {
+        displayInput("COMMISSION FEE CANNOT BE NEGATIVE");
+      }
+    }
+
+  }
+
+  @Override
   public String showQuit() {
     while (true) {
       displayInput("DO YOU WANT TO QUIT? (Y/N)");

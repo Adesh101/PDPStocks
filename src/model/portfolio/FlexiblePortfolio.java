@@ -156,9 +156,13 @@ public class FlexiblePortfolio implements IFlexiblePortfolio {
     return value;
   }
 
+//  @Override
+//  public HashMap<String, HashMap<String, List<String>>> returnMap() {
+//    return map;
+//  }
   @Override
-  public HashMap<String, HashMap<String, List<String>>> returnMap() {
-    return portfolios;
+  public HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnMap(){
+    return map;
   }
 
   private String getPreviousDate(String currentDate, String name){
