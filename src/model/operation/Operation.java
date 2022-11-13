@@ -1,5 +1,6 @@
 package model.operation;
 
+import java.util.Calendar;
 import java.util.Date;
 import model.filehandling.csvFiles;
 import model.portfolio.FlexiblePortfolio;
@@ -260,6 +261,11 @@ public class Operation implements IOperation {
   }
   @Override
   public Date yesterdaysDate(){
+    Calendar startDate = Calendar.getInstance();
+    startDate.setTime(new Date(System.currentTimeMillis()));
+    if (startDate.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+      return new Date(System.currentTimeMillis()-2*24*60*60*1000);
+    }
     return new Date(System.currentTimeMillis()-24*60*60*1000);
   }
   @Override
