@@ -12,7 +12,6 @@ public class AddStockToPortfolio implements IActions {
   int quantity;
   String ticker;
   double price;
-  String date;
 
   /**
    * Constructor for AddStockToPortfolio class.
@@ -29,12 +28,11 @@ public class AddStockToPortfolio implements IActions {
 
   @Override
   public String operate(IOperation operation) {
-    if (operation.checkWhetherFlexible(this.portfolioName)) {
+    if (operation.checkPortfolioAlreadyExists(this.portfolioName)) {
       if (operation.isTickerValid(this.ticker)) {
-        //this.price = Double.parseDouble(operation.callStockAPI(this.ticker, "")[3]);//operation.getCurrentPrice(this.ticker);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         this.price = Double.parseDouble(operation.callStockAPI(this.ticker, dateFormat.format(operation.yesterdaysDate()))[3]);//operation.getCurrentPrice(this.ticker);
-        operation.addStockToInFlexiblePortfolio(this.portfolioName, this.ticker, this.quantity, this.price);
+        operation.addStockToPortfolio(this.portfolioName, this.ticker, this.quantity, this.price);
         return "STOCK " + this.ticker + " WITH QUANTITY " + this.quantity + " ADDED TO "
             + this.portfolioName + " PORTFOLIO.";
       }

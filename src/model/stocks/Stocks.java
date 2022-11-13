@@ -29,7 +29,6 @@ public class Stocks implements IStocks {
     if (date.equals(""))
       date = isWeekend(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
 
-    //How to check for recent dates? Suppose if I update on 8th November, how will I get data for 9th November??
     if(file.checkLocalData(ticker)) {
       return file.readFromLocalData(ticker, date);
     }
@@ -57,8 +56,6 @@ public class Stocks implements IStocks {
       throw new IllegalArgumentException("No price data found for " + ticker);
     }
     return file.readFromLocalData(ticker, date);
-//    this.stockData = output.toString().split(",");
-//    return this.stockData;
   }
 
   @Override
@@ -123,14 +120,4 @@ public class Stocks implements IStocks {
     csvFiles file = new csvFiles();
     return Double.parseDouble(file.readFromLocalData(ticker, date)[4]);
   }
-
-//
-//
-//  @Override
-//  public double getStockCurrentPriceByDate(String ticker) {
-//    if (this.stockData.length > 2) {
-//      return Double.parseDouble(this.stockData[1]);
-//    }
-//    return 0;
-//  }
 }

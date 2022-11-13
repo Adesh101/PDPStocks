@@ -38,13 +38,6 @@ public interface IOperation {
    */
   int getMapSize(String portfolioName);
 
-//  /**
-//   * A method that gives the current price of the stock.
-//   * @return:  the price in double
-//   * @param: ticker symbol of the stock whose price needs to be fetched
-//   */
-//  double getCurrentPrice(String ticker);
-
   /**
    * A method to check whether a portfolio already exists.
    * @return:  true if the portfolio already exists else returns false
@@ -84,14 +77,6 @@ public interface IOperation {
    */
   HashMap<String, HashMap<String, List<String>>> getPortfolioMap();
 
-//  /**
-//   * A method to fetch a particular portfolio value on a given date.
-//   * @param: map
-//   * @param: date
-//   * @return: value of portfolio
-//   */
-//  double callStockAPIByDateHelper(HashMap<String, List<String>> map, String date);
-
   /**
    * Fetches the data of a particular portfolio.
    * @param: portfolioName
@@ -108,14 +93,6 @@ public interface IOperation {
   double getPortfolioByDate(String portfolioName, String date);
 
   String[] callStockAPI(String ticker, String date);
-  void createFlexiblePortfolio(String portfolioName, String date);
-  void createLockedPortfolio(String portfolioName, String date);
-  Date yesterdaysDate();
-  boolean checkWhetherFlexible(String portFolioName);
-  boolean checkWhetherInflexible(String portFolioName);
-  void getFlexibleMap();
-  void getInflexibleMap();
-  void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity, double price);
-  void addStockToInFlexiblePortfolio(String portfolioName, String ticker, int quantity,
-      double price);
+
+  public Date yesterdaysDate();
 }
