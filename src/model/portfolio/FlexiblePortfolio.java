@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 public class FlexiblePortfolio implements IFlexiblePortfolio {
   protected HashMap<String, HashMap<String, List<String>>> portfolios
@@ -105,25 +106,26 @@ public class FlexiblePortfolio implements IFlexiblePortfolio {
   }
 
   @Override
-  public void sellStock(String portfolioName, String ticker, int quantity, double price) {
-    if(!portfolios.containsKey(portfolioName)){
+  public void sellStock(String portfolioName, String ticker, int quantity, double price, String date) {
+    if(!map.containsKey(portfolioName)){
       throw new IllegalArgumentException("Enter valid portfolio name.");
     }
-    if (portfolios.get(portfolioName).containsKey(ticker)) {
-      int existingNoOfStocks = Integer.parseInt(portfolios.get(portfolioName).get(ticker).get(0));
+    String prevdate=getPreviousDate(date, portfolioName);
+    if (map.get(portfolioName).get(prevdate).containsKey(ticker)) {
+      int existingNoOfStocks = Integer.parseInt(map.get(portfolioName).get(prevdate).get(ticker).get(0));
       if(quantity==existingNoOfStocks){
-        portfolios.get(portfolioName).remove(ticker);
+        map.get(portfolioName).remove(ticker);
       } else if (quantity>existingNoOfStocks) {
         throw new IllegalArgumentException("NOT ENOUGH STOCKS PRESENT IN PORTFOLIO");
       } else {
-        portfolios.get(portfolioName).get(ticker)
+        map.get(portfolioName).get(prevdate).get(ticker)
             .set(0, String.valueOf(existingNoOfStocks - quantity));
-        double existingPrice = Double.parseDouble(portfolios.get(portfolioName).get(ticker).get(1));
-        portfolios.get(portfolioName).get(ticker)
+        double existingPrice = Double.parseDouble(map.get(portfolioName).get(prevdate).get(ticker).get(1));
+        map.get(portfolioName).get(prevdate).get(ticker)
             .set(1, String.valueOf((existingPrice + price) / 2)); // chrck
         double existingTotalStockValue = Double.parseDouble(
-            portfolios.get(portfolioName).get(ticker).get(2));
-        portfolios.get(portfolioName).get(ticker)
+            map.get(portfolioName).get(prevdate).get(ticker).get(2));
+        map.get(portfolioName).get(prevdate).get(ticker)
             .set(2, String.valueOf(existingTotalStockValue - (quantity * price)));
         this.totalValue = totalValue - Math.round(quantity * price);
       }
@@ -168,6 +170,10 @@ public class FlexiblePortfolio implements IFlexiblePortfolio {
   private String getPreviousDate(String currentDate, String name){
     List<String> dates=new ArrayList<>();
     ListIterator<String> dateIterator = new ArrayList<String>(map.get(name).keySet()).listIterator();
+    if(map.get(name).keySet().size()==1){
+      //Set<String> date=map.get(name).keySet();
+      return map.get(name).keySet().iterator().next();
+    }
     while (dateIterator.hasNext()){
       dates.add(dateIterator.next()); // check for last element
     }

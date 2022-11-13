@@ -69,4 +69,8 @@ public interface IView {
   String showPortfolioTypeMenu();
   String showSellConfirmation();
   double showCommissionFee();
+  String showBuyDate();
+  String showCompositionDat();
+  String showCostBasisDate();
+  String showSellDate();
 }

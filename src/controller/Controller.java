@@ -1,6 +1,7 @@
 package controller;
 
 import controller.actions.AddStockToFlexiblePortfolio;
+import controller.actions.CostBasisByDate;
 import controller.actions.CreateFlexiblePortfolio;
 import controller.actions.IActions;
 import controller.actions.AddStockToPortfolio;
@@ -107,7 +108,7 @@ public class Controller implements IController {
                   || continueAdditionOfStocks.equalsIgnoreCase("y")) {
                 input = view.showEnterPortfolioToAddStocks();
                 if(operation.checkWhetherFlexible(input)){
-                  action = new AddStockToFlexiblePortfolio(input, view.showTicker(), view.showQuantity());
+                  action = new AddStockToFlexiblePortfolio(input, view.showTicker(), view.showQuantity(), view.showBuyDate());
                 }
                 else {
                   action = new AddStockToPortfolio(input, view.showTicker(), view.showQuantity());
@@ -125,11 +126,12 @@ public class Controller implements IController {
               input = "";
               while(continueSellingOfStocks.equalsIgnoreCase("Y")){
                 input=view.showEnterPortfolioToAddStocks();
-                action=new SellStock(input, view.showTicker(), view.showQuantity());
+                action=new SellStock(input, view.showTicker(), view.showQuantity(), view.showSellDate());
                 view.displayInput(action.operate(operation));
                 continueSellingOfStocks = view.showSellConfirmation();
               }
               // update csv
+
               flag=false;
               view.showMenu();
               menuOption = view.fetchInput();
@@ -157,12 +159,15 @@ public class Controller implements IController {
               menuOption = view.fetchInput();
               break;
             case "7":
+              action = new CostBasisByDate(view.showEnterNewPortfolioName(), view.showCostBasisDate());
+              view.displayInput(action.operate(operation));
+              flag = false;
+              view.showMenu();
+              menuOption = view.fetchInput();
               break;
             case "8":
               break;
             case "9":
-              break;
-            case "10":
               flag = true;
               break;
             default:

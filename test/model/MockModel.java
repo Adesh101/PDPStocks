@@ -140,13 +140,28 @@ public class MockModel implements IOperation {
 
   @Override
   public void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity,
-      double price) {
+      double price, String date) {
 
   }
 
   @Override
   public void addStockToInFlexiblePortfolio(String portfolioName, String ticker, int quantity,
       double price) {
+
+  }
+
+  @Override
+  public double costBasisByDate(String portfolioName, String date) {
+    return 0;
+  }
+
+  @Override
+  public int getFlexibleMapSize() {
+    return 0;
+  }
+
+  @Override
+  public void sellStock(String portfolioName, String ticker, int quantity, double price, String date) {
 
   }
 }

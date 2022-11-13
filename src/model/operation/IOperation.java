@@ -115,7 +115,12 @@ public interface IOperation {
   boolean checkWhetherInflexible(String portFolioName);
   void getFlexibleMap();
   void getInflexibleMap();
-  void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity, double price);
+  void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity, double price, String date);
   void addStockToInFlexiblePortfolio(String portfolioName, String ticker, int quantity,
       double price);
+  double costBasisByDate(String portfolioName, String date);
+  int getFlexibleMapSize();
+  void sellStock(String portfolioName, String ticker, int quantity, double price, String date);
+//  void writeToCSVFlexible(String name);
+//  void writeToCSVInflexible(String name);
 }

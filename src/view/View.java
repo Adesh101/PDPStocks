@@ -60,6 +60,7 @@ public class View implements IView {
   @Override
   public boolean isValidDate(String input) {
     String dateFormat = "yyyy-MM-dd";
+    // Check length
     try {
       DateFormat df = new SimpleDateFormat(dateFormat);
       df.setLenient(false);
@@ -112,10 +113,9 @@ public class View implements IView {
     sb.append("4. VIEW PORTFOLIO NAMES\n");
     sb.append("5. VIEW PORTFOLIO AMOUNT BY DATE\n");
     sb.append("6. VIEW PORTFOLIO COMPOSITION\n");
-    sb.append("7. VIEW CURRENT COST BASIS OF A PORTFOLIO\n");
-    sb.append("8. VIEW COST BASIS OF A PORTFOLIO FOR A GIVEN DATE\n");
-    sb.append("9. VIEW PERFORMANCE GRAPH\n");
-    sb.append("10. QUIT\n");
+    sb.append("7. VIEW COST BASIS OF A PORTFOLIO FOR A GIVEN DATE\n");
+    sb.append("8. VIEW PERFORMANCE GRAPH\n");
+    sb.append("9. QUIT\n");
     sb.append("------------------------------");
     displayInput(sb.toString());
   }
@@ -188,6 +188,19 @@ public class View implements IView {
       }
     }
 
+  }
+
+  @Override
+  public String showBuyDate() {
+    while (true) {
+      displayInput("ENTER BUY DATE (FORMAT: YYYY-MM-DD):");
+      String date = nextInput();
+      if (isValidDate(date)) {
+        return date;
+      } else {
+        displayInput("ENTER DATE IN YYYY-MM-DD FORMAT.");
+      }
+    }
   }
 
   @Override
@@ -359,6 +372,42 @@ public class View implements IView {
         return option;
       }
       displayInput("INVALID INPUT.");
+    }
+  }
+  @Override
+  public String showCompositionDat(){
+    while (true) {
+      displayInput("ENTER DATE WHOSE COMPOSITION IS NEEDED (FORMAT: YYYY-MM-DD):");
+      String date = nextInput();
+      if (isValidDate(date)) {
+        return date;
+      } else {
+        displayInput("ENTER DATE IN YYYY-MM-DD FORMAT.");
+      }
+    }
+  }
+  @Override
+  public String showCostBasisDate() {
+    while (true) {
+      displayInput("ENTER DATE TO SEE COST BASIS (FORMAT: YYYY-MM-DD):");
+      String date = nextInput();
+      if (isValidDate(date)) {
+        return date;
+      } else {
+        displayInput("ENTER DATE IN YYYY-MM-DD FORMAT.");
+      }
+    }
+  }
+  @Override
+  public String showSellDate() {
+    while (true) {
+      displayInput("ENTER DATE TO SELL STOCK (FORMAT: YYYY-MM-DD):");
+      String date = nextInput();
+      if (isValidDate(date)) {
+        return date;
+      } else {
+        displayInput("ENTER DATE IN YYYY-MM-DD FORMAT.");
+      }
     }
   }
 }
