@@ -14,6 +14,7 @@ public interface IStocks {
   String isWeekend(String date);
 
   void updateFile(String file);
+  double getPriceByDate(String ticker, String date);
 
 //
 //  /**

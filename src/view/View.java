@@ -108,10 +108,14 @@ public class View implements IView {
     sb.append("----------------------------\n");
     sb.append("1. CREATE NEW PORTFOLIO\n");
     sb.append("2. ADD STOCKS TO A PORTFOLIO\n");
-    sb.append("3. VIEW PORTFOLIO NAMES\n");
-    sb.append("4. VIEW PORTFOLIO AMOUNT BY DATE\n");
-    sb.append("5. VIEW PORTFOLIO COMPOSITION\n");
-    sb.append("6. QUIT\n");
+    sb.append("3. SELL STOCKS FROM A PORTFOLIO\n");
+    sb.append("4. VIEW PORTFOLIO NAMES\n");
+    sb.append("5. VIEW PORTFOLIO AMOUNT BY DATE\n");
+    sb.append("6. VIEW PORTFOLIO COMPOSITION\n");
+    sb.append("7. VIEW CURRENT COST BASIS OF A PORTFOLIO\n");
+    sb.append("8. VIEW COST BASIS OF A PORTFOLIO FOR A GIVEN DATE\n");
+    sb.append("9. VIEW PERFORMANCE GRAPH\n");
+    sb.append("10. QUIT\n");
     sb.append("------------------------------");
     displayInput(sb.toString());
   }
@@ -154,6 +158,18 @@ public class View implements IView {
         return confirmation;
       }
       displayInput("ENTER Y/N INPUT.");
+    }
+  }
+  @Override
+  public String showSellConfirmation(){
+    displayInput("ORDER PLACED SUCCESSFULLY!");
+    while (true) {
+      displayInput("DO YOU WISH TO SELL MORE STOCKS? (Y?N)");
+      String confirmation = nextInput();
+      if(confirmation.equalsIgnoreCase("Y") || confirmation.equalsIgnoreCase("N")){
+        return confirmation;
+      }
+      displayInput("ENTER Y?N INPUT.");
     }
   }
 
@@ -284,5 +300,48 @@ public class View implements IView {
   @Override
   public void showNoPortfoliosPresent() {
     displayInput("No portfolios Found");
+  }
+
+  @Override
+  public String showPortfolioCreationDate() {
+    while (true) {
+      displayInput("ENTER PORTFOLIO CREATION DATE (FORMAT: YYYY-MM-DD):");
+      String date = nextInput();
+      if (isValidDate(date)) {
+        return date;
+      } else {
+        displayInput("ENTER DATE IN YYYY-MM-DD FORMAT.");
+      }
+    }
+  }
+
+  @Override
+  public String showPortfolioTypeMenu() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("1. CREATE FLEXIBLE PORTFOLIO\n");
+    sb.append("2. CREATE LOCKED PORTFOLIO");
+    displayInput(sb.toString());
+    while (true){
+      String option = nextInput();
+      if(option.equals("1") || option.equals("2")){
+        return option;
+      }
+      displayInput("Invalid Input.");
+    }
+  }
+
+  @Override
+  public String showInflexiblePortfolioMenu() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("1. CREATE NEW COMPOSITION\n");
+    sb.append("2. GET EXISTING COMPOSITION FROM CSV");
+    displayInput(sb.toString());
+    while (true) {
+      String option = nextInput();
+      if (option.equals("1") || option.equals("2")) {
+        return option;
+      }
+      displayInput("INVALID INPUT.");
+    }
   }
 }

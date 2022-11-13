@@ -64,4 +64,8 @@ public interface IView {
   void showPortfolioCreatedSuccessfully(String name);
 
   void showNoPortfoliosPresent();
+  String showPortfolioCreationDate();
+  String showInflexiblePortfolioMenu();
+  String showPortfolioTypeMenu();
+  String showSellConfirmation();
 }

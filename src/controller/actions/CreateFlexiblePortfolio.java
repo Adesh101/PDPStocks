@@ -1,20 +1,20 @@
 package controller.actions;
 
 import model.operation.IOperation;
-import model.portfolio.IPortfolio;
+import model.portfolio.IFlexiblePortfolio;
 
 public class CreateFlexiblePortfolio implements IActions {
-  private IPortfolio portfolio;
   private String portfolioName;
-  public CreateFlexiblePortfolio(String portfolioName){
+  private String date;
+  public CreateFlexiblePortfolio(String portfolioName, String date){
     this.portfolioName=portfolioName;
-
+    this.date=date;
   }
 
   @Override
   public String operate(IOperation operation) {
-    operation.createFlexiblePortfolio(this.portfolioName);
-    return "Portfolio " + this.portfolioName + " successfully created. \n";
+    operation.createFlexiblePortfolio(this.portfolioName,this.date);
+    return "Portfolio " + this.portfolioName + " successfully created on date " + this.date+"\n";
 
   }
 }

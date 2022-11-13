@@ -1,15 +1,16 @@
 package controller;
 
+import controller.actions.AddStockToFlexiblePortfolio;
 import controller.actions.CreateFlexiblePortfolio;
 import controller.actions.IActions;
 import controller.actions.AddStockToPortfolio;
 import controller.actions.CreateNewPortfolio;
 import controller.actions.CreateNewPortfolioCSV;
+import controller.actions.SellStock;
 import controller.actions.ShowAmountOfPortfolioByDate;
 import controller.actions.ShowComposition;
 import controller.actions.ShowExistingPortfolios;
 import model.operation.IOperation;
-import model.portfolio.IPortfolio;
 import view.IView;
 
 /**
@@ -58,16 +59,43 @@ public class Controller implements IController {
         try {
           switch (menuOption) {
             case "1":
-
-              String option = view.showPortfolioMenuOption();
-              if (option.equals("1")) {
-                action = new CreateNewPortfolio(view.showEnterNewPortfolioName());
-                view.displayInput(action.operate(operation));
-              } else if (option.equals("2")) {
-                String fileName = view.showFileName();
-                action = new CreateNewPortfolioCSV(fileName);
-                view.displayInput(action.operate(operation));//;
+              String typeOption=view.showPortfolioTypeMenu();
+              if(typeOption.equals("1")){
+                String option = view.showPortfolioMenuOption();
+                if (option.equals("1")) {
+                  action = new CreateFlexiblePortfolio(view.showEnterNewPortfolioName(),
+                      view.showPortfolioCreationDate());
+                  view.displayInput(action.operate(operation));
+                } else if (option.equals("2")) {
+                  String fileName = view.showFileName();
+                  action = new CreateNewPortfolioCSV(fileName);
+                  view.displayInput(action.operate(operation));//;
+                }
               }
+
+              else if (typeOption.equals("2")) {
+                String option = view.showPortfolioMenuOption();
+                if (option.equals("1")) {
+                  action = new CreateNewPortfolio(view.showEnterNewPortfolioName(),
+                      view.showPortfolioCreationDate());
+                  view.displayInput(action.operate(operation));
+                } else if (option.equals("2")) {
+                  String fileName = view.showFileName();
+                  action = new CreateNewPortfolioCSV(fileName);
+                  view.displayInput(action.operate(operation));//;
+                }
+              }
+
+//              String option = view.showPortfolioMenuOption();
+//              if (option.equals("1")) {
+//                action = new CreateNewPortfolio(view.showEnterNewPortfolioName(),
+//                    view.showPortfolioCreationDate());
+//                view.displayInput(action.operate(operation));
+//              } else if (option.equals("2")) {
+//                String fileName = view.showFileName();
+//                action = new CreateNewPortfolioCSV(fileName);
+//                view.displayInput(action.operate(operation));//;
+//              }
               view.showMenu();
               menuOption = view.fetchInput();
               flag = false;
@@ -78,7 +106,12 @@ public class Controller implements IController {
               while (continueAdditionOfStocks.equalsIgnoreCase("Y")
                   || continueAdditionOfStocks.equalsIgnoreCase("y")) {
                 input = view.showEnterPortfolioToAddStocks();
-                action = new AddStockToPortfolio(input, view.showTicker(), view.showQuantity());
+                if(operation.checkWhetherFlexible(input)){
+                  action = new AddStockToFlexiblePortfolio(input, view.showTicker(), view.showQuantity());
+                }
+                else {
+                  action = new AddStockToPortfolio(input, view.showTicker(), view.showQuantity());
+                }
                 view.displayInput(action.operate(operation));
                 continueAdditionOfStocks = view.showPostConfirmation();
               }
@@ -88,13 +121,27 @@ public class Controller implements IController {
               menuOption = view.fetchInput();
               break;
             case "3":
+              String continueSellingOfStocks = "Y";
+              input = "";
+              while(continueSellingOfStocks.equalsIgnoreCase("Y")){
+                input=view.showEnterPortfolioToAddStocks();
+                action=new SellStock(input, view.showTicker(), view.showQuantity());
+                view.displayInput(action.operate(operation));
+                continueSellingOfStocks = view.showSellConfirmation();
+              }
+              // update csv
+              flag=false;
+              view.showMenu();
+              menuOption = view.fetchInput();
+              break;
+            case "4":
               action = new ShowExistingPortfolios();
               view.displayInput(action.operate(operation));
               flag = false;
               view.showMenu();
               menuOption = view.fetchInput();
               break;
-            case "4":
+            case "5":
               action = new ShowAmountOfPortfolioByDate(view.showEnterNewPortfolioName(),
                   view.showDate());
               view.displayInput(action.operate(operation));
@@ -102,34 +149,20 @@ public class Controller implements IController {
               view.showMenu();
               menuOption = view.fetchInput();
               break;
-            case "5":
+            case "6":
               action = new ShowComposition(view.showEnterNewPortfolioName());
               view.displayInput(action.operate(operation));
               flag = false;
               view.showMenu();
               menuOption = view.fetchInput();
               break;
-//            case "6":
-//              option = view.showPortfolioMenuOption();
-//              if (option.equals("1")) {
-//                action = new CreateNewPortfolio(view.showEnterNewPortfolioName());
-//                view.displayInput(action.operate(operation));
-//              } else if (option.equals("2")) {
-//                String fileName = view.showFileName();
-//                action = new CreateNewPortfolioCSV(fileName);
-//                view.displayInput(action.operate(operation));//;
-//              }
-//              // show composition
-//              action = new ShowComposition(view.showEnterNewPortfolioName());
-//              view.displayInput(action.operate(operation));
-//              view.showMenu();
-//              menuOption = view.fetchInput();
-//              flag = false;
-//              break;
-
-
-
-            case "6":
+            case "7":
+              break;
+            case "8":
+              break;
+            case "9":
+              break;
+            case "10":
               flag = true;
               break;
             default:

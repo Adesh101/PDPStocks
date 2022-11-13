@@ -36,16 +36,22 @@ public class csvFiles implements fileHandling {
     try {
       BufferedReader br = new BufferedReader(new FileReader("./data/" + ticker + ".csv"));
       while((line = br.readLine()) != null) {
-        if (line.contains(date)) {
+        //if (line.contains(date)) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date dt = sdf.parse(date);
+        sdf.applyPattern("dd-MM-yyyy");
+        String difDate = sdf.format(dt);
+        if (line.contains(date) || line.contains(difDate)) {
           tempData = line.split(splitBy);
           break;
         }
       }
-      return tempData;
+     // return tempData;
     } catch (Exception ex) {
       System.out.println(ex.getMessage());;
     }
-    return new String[0];
+   // return new String[0];
+    return tempData;
   }
 
   @Override
@@ -69,7 +75,7 @@ public class csvFiles implements fileHandling {
     try {
       BufferedReader br = new BufferedReader(new FileReader("./sticker/stickers.txt"));
       while((line = br.readLine()) != null) {
-        if (line.equals(ticker)) {
+        if (line.equalsIgnoreCase(ticker)) {
           return true;
         }
       }

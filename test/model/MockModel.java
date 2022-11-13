@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import model.operation.IOperation;
@@ -103,12 +104,49 @@ public class MockModel implements IOperation {
   }
 
   @Override
-  public void createFlexiblePortfolio(String portfolioName) {
+  public void createFlexiblePortfolio(String portfolioName, String date) {
 
   }
 
   @Override
-  public void createLockedPortfolio(String portfolioName) {
+  public void createLockedPortfolio(String portfolioName, String date) {
+
+  }
+
+  @Override
+  public Date yesterdaysDate() {
+    return null;
+  }
+
+  @Override
+  public boolean checkWhetherFlexible(String portFolioName) {
+    return false;
+  }
+
+  @Override
+  public boolean checkWhetherInflexible(String portFolioName) {
+    return false;
+  }
+
+  @Override
+  public void getFlexibleMap() {
+
+  }
+
+  @Override
+  public void getInflexibleMap() {
+
+  }
+
+  @Override
+  public void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity,
+      double price) {
+
+  }
+
+  @Override
+  public void addStockToInFlexiblePortfolio(String portfolioName, String ticker, int quantity,
+      double price) {
 
   }
 }

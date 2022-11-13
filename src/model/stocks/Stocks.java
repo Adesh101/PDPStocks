@@ -118,6 +118,11 @@ public class Stocks implements IStocks {
     }
   }
 
+  @Override
+  public double getPriceByDate(String ticker, String date) {
+    csvFiles file = new csvFiles();
+    return Double.parseDouble(file.readFromLocalData(ticker, date)[4]);
+  }
 
 //
 //

@@ -1,5 +1,6 @@
 package model.operation;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -107,6 +108,14 @@ public interface IOperation {
   double getPortfolioByDate(String portfolioName, String date);
 
   String[] callStockAPI(String ticker, String date);
-  void createFlexiblePortfolio(String portfolioName);
-  void createLockedPortfolio(String portfolioName);
+  void createFlexiblePortfolio(String portfolioName, String date);
+  void createLockedPortfolio(String portfolioName, String date);
+  Date yesterdaysDate();
+  boolean checkWhetherFlexible(String portFolioName);
+  boolean checkWhetherInflexible(String portFolioName);
+  void getFlexibleMap();
+  void getInflexibleMap();
+  void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity, double price);
+  void addStockToInFlexiblePortfolio(String portfolioName, String ticker, int quantity,
+      double price);
 }

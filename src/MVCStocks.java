@@ -19,8 +19,8 @@ public class MVCStocks {
    * @param: args
    */
   public static void main(String[] args) {
-    UpdateStockData data = new UpdateStockData();
-    data.getFiles();
+//    UpdateStockData data = new UpdateStockData();
+//    data.getFiles();
     IStocks stocks = new Stocks();
     IOperation operation = new Operation(stocks);
     IView view = new View(new InputStreamReader(System.in), System.out);

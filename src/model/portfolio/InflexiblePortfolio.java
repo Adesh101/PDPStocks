@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class InflexiblePortfolio implements IPortfolio {
+public class InflexiblePortfolio implements IInflexiblePortfolio {
   protected HashMap<String, HashMap<String, List<String>>> portfolios
       = new HashMap<String, HashMap<String, List<String>>>();
   protected String portfolioName;
@@ -15,7 +15,7 @@ public class InflexiblePortfolio implements IPortfolio {
   }
 
   @Override
-  public void createPortfolio(String portfolioName) {
+  public void createPortfolio(String portfolioName, String date) {
     if (checkPortfolioAlreadyExists(portfolioName)) {
       if (getMapSize(portfolioName) != 0) {
         throw new IllegalArgumentException("CANNOT MODIFY A LOCKED PORTFOLIO.");
@@ -33,7 +33,7 @@ public class InflexiblePortfolio implements IPortfolio {
   }
 
   @Override
-  public void buyStock(String portfolioName, String ticker, int quantity, double price) {
+  public void buyStock(String portfolioName, String ticker, int quantity, double price, String date) {
     if (!portfolios.containsKey(portfolioName)) {
       throw new IllegalArgumentException("Enter valid portfolio name.");
     }
@@ -58,13 +58,18 @@ public class InflexiblePortfolio implements IPortfolio {
   }
 
   @Override
-  public void sellStock(String portfolioName, String ticker, int quantity, double price) {
-
+  public double costBasisByDate(String portFolioName, String date) {
+    return totalValue;
   }
 
   @Override
-  public double costBasisByDate(String portFolioName, String date) {
-    return totalValue;
+  public double portfolioValue(String portfolioName, String date) {
+    return 0;
+  }
+
+  @Override
+  public HashMap<String, HashMap<String, List<String>>> returnMap() {
+    return portfolios;
   }
 
 
