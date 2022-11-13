@@ -85,33 +85,34 @@ public class Stocks implements IStocks {
     URL url = null;
 
     String tillDate = files.getMostRecentDate(file);
-
-    try {
-      url = new URL("https://www.alphavantage"
-          + ".co/query?function=TIME_SERIES_DAILY"
-          + "&outputsize=full"
-          + "&symbol"
-          + "=" + file + "&apikey=" + apiKey + "&datatype=csv");
-    } catch (MalformedURLException e) {
-      throw new RuntimeException("the alphavantage API has either changed or "
-          + "no longer works");
-    }
-    InputStream in = null;
-    StringBuilder output = new StringBuilder();
-    try {
-      in = url.openStream();
-      int b;
-      String newData = "";
-      while ((b = in.read()) != -1) {
-        output.append((char) b);
-        if (output.toString().contains(tillDate)) {
-          break;
-        }
+    if (!files.checkIfRecentDateIsCurrentDate(tillDate)) {
+      try {
+        url = new URL("https://www.alphavantage"
+            + ".co/query?function=TIME_SERIES_DAILY"
+            + "&outputsize=full"
+            + "&symbol"
+            + "=" + file + "&apikey=" + apiKey + "&datatype=csv");
+      } catch (MalformedURLException e) {
+        throw new RuntimeException("the alphavantage API has either changed or "
+            + "no longer works");
       }
-      newData = output.substring(output.indexOf("\n")+1, output.lastIndexOf("\r"));
-      files.updateFile(file, newData);
-    } catch (IOException e) {
-      throw new IllegalArgumentException("No price data found for: " + file);
+      InputStream in = null;
+      StringBuilder output = new StringBuilder();
+      try {
+        in = url.openStream();
+        int b;
+        String newData = "";
+        while ((b = in.read()) != -1) {
+          output.append((char) b);
+          if (output.toString().contains(tillDate)) {
+            break;
+          }
+        }
+        newData = output.substring(output.indexOf("\n") + 1, output.lastIndexOf("\r"));
+        files.updateFile(file, newData);
+      } catch (IOException e) {
+        throw new IllegalArgumentException("No price data found for: " + file);
+      }
     }
   }
 
