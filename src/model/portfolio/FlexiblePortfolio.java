@@ -44,7 +44,7 @@ public class FlexiblePortfolio implements IFlexiblePortfolio {
 
   @Override
   public void buyStock(String portfolioName, String ticker, int quantity, double price, String date) {
-    if (!portfolios.containsKey(portfolioName)) {
+    if (!map.containsKey(portfolioName)) {
       throw new IllegalArgumentException("Enter valid portfolio name.");
     }
     if(map.get(portfolioName).containsKey(date)) {
