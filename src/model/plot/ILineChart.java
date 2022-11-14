@@ -1,9 +1,9 @@
 package model.plot;
 
-import java.time.LocalDate;
+import java.text.ParseException;
 
 public interface ILineChart {
-  void plot(String portfolioName, String startDate, String endDate);
+  String plot(String portfolioName, String startDate, String endDate) throws ParseException;
   void show();
 
 }

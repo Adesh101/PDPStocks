@@ -1,42 +1,107 @@
 package model.plot;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import model.portfolio.FlexiblePortfolio;
+import model.portfolio.IFlexiblePortfolio;
 
 public class LineChart implements ILineChart {
+  HashMap<String, HashMap<String, Double>> costBasisMap = new HashMap<String, HashMap<String , Double>>();
+  IFlexiblePortfolio FPortfolio = new FlexiblePortfolio();
+  private String portfolioName;
 
   @Override
-  public void plot(String portfolioName, String startDate, String endDate) {
+  public String plot(String portfolioName, String startDate, String endDate) throws ParseException {
+    getCostBasisMap();
+    this.portfolioName=portfolioName;
+    String chart="";
+    //StringBuilder sb=new StringBuilder();
     int differenceInDays = differenceBetweenDaysInDays(startDate, endDate);
     int differenceInMonths = differenceBetweenDaysInMonths(startDate, endDate);
-    int differenceInYears = diffferenceBetweenDaysInYears(startDate, endDate);
-    if(differenceInDays>=5 || differenceInDays<=30){
+    int differenceInYears = differenceBetweenDaysInYears(startDate, endDate);
+    if(differenceInDays<=30){
+      chart=daySpan(startDate, endDate, differenceInDays);
 
-    } else if (differenceInDays>30 || differenceInDays<900) {
+    } else if (differenceInDays>30 && differenceInMonths<5){
+      int diff= (differenceInDays/7) + 1;
+      chart=weekSpan(startDate, endDate, diff);
 
-    } //else if () {
-
+    } else if (differenceInMonths>=5 && differenceInMonths<=30) {
+      chart=monthSpan(startDate, endDate, differenceInMonths);
+    } else if (differenceInMonths>30 && differenceInYears<5) {
+      int diff= (differenceInMonths/3)+1;
+      chart=threeMonthSpan(startDate, endDate, diff);
+    } else if (differenceInYears>=5 && differenceInYears<=30) {
+      chart=yearSpan(startDate, endDate, differenceInYears);
     }
+    else {
+      // handle this
+    }
+    return chart;
+  }
 
 
   @Override
   public void show() {
 
   }
-  private List<String> daySpan(){
+  private void getCostBasisMap(){
+    costBasisMap= FPortfolio.returnCostBasisMap();
+  }
+  private String daySpan(String startDate, String endDate, int difference) throws ParseException {
+    String[][] data = new String[difference][2];
+    LocalDate start = LocalDate.of(Integer.parseInt(startDate.substring(0,4)),
+        Integer.parseInt(startDate.substring(5,7)),Integer.parseInt(startDate.substring(8)));
+    LocalDate end = LocalDate.of(Integer.parseInt(endDate.substring(0,4)),
+        Integer.parseInt(endDate.substring(5,7)),Integer.parseInt(endDate.substring(8)));
+    int i=0;
+    Double max=0.00,min=Double.MAX_VALUE;
+    Double[] costArr=new Double[difference];
+    for(LocalDate date=start; !date.isAfter(end);date=date.plusDays(1)){
+      costArr[i]= costBasisMap.get(portfolioName).get(date);
+      if(costArr[i]>max){
+        max=costArr[i];
+      }
+      if(costArr[i]<min){
+        min=costArr[i];
+      }
+      i++;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     return null;
   }
-  private List<String> monthSpan(){
+  private String weekSpan(String startDate, String endDate, int difference){
+    StringBuilder sb=new StringBuilder();
     return null;
   }
-  private List<String> threeMonthSpan(){
+  private String monthSpan(String startDate, String endDate, int difference){
+    StringBuilder sb=new StringBuilder();
     return null;
   }
-  private List<String> yearSpan(){
+  private String threeMonthSpan(String startDate, String endDate, int difference){
+    StringBuilder sb=new StringBuilder();
+    return null;
+  }
+  private String yearSpan(String startDate, String endDate, int difference){
+    StringBuilder sb=new StringBuilder();
     return null;
   }
 
@@ -52,7 +117,7 @@ public class LineChart implements ILineChart {
     int differenceInMonths = difference.getMonths();
     return differenceInMonths;
   }
-  private int diffferenceBetweenDaysInYears(String startDate, String endDate){
+  private int differenceBetweenDaysInYears(String startDate, String endDate){
     Period difference = LocalDateHelper(startDate, endDate);
     int differenceInYears = difference.getYears();
     return differenceInYears;

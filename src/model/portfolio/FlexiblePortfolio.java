@@ -167,6 +167,11 @@ public class FlexiblePortfolio implements IFlexiblePortfolio {
     return map;
   }
 
+  @Override
+  public HashMap<String, HashMap<String, Double>> returnCostBasisMap() {
+    return costBasis;
+  }
+
   private String getPreviousDate(String currentDate, String name){
     List<String> dates=new ArrayList<>();
     ListIterator<String> dateIterator = new ArrayList<String>(map.get(name).keySet()).listIterator();

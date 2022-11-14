@@ -74,4 +74,5 @@ public interface IView {
   String showCostBasisDate();
   String showSellDate();
   void showAddStock();
+  void showLineChart(String[][] data);
 }

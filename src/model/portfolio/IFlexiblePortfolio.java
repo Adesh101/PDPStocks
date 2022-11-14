@@ -11,4 +11,5 @@ public interface IFlexiblePortfolio {
   double costBasisByDate(String portFolioName, String date);
   double portfolioValue(String portfolioName, String date);
   HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnMap();
+  HashMap<String, HashMap<String, Double>> returnCostBasisMap();
 }

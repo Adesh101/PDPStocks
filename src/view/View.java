@@ -416,4 +416,10 @@ public class View implements IView {
   public void showAddStock() {
     displayInput("ENTER STOCK DETAILS TO BE ADDED TO THE PORTFOLIO.");
   }
+  @Override
+  public void showLineChart(String [][] data){
+
+
+
+  }
 }
