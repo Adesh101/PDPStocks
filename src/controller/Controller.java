@@ -175,10 +175,9 @@ public class Controller implements IController {
 
   @Override
   public void addStocksHelper(String portfolioName) {
-    String continueAdditionOfStocks = "Y";
+    String addStocks = "Y";
     String input = "";
-    while (continueAdditionOfStocks.equalsIgnoreCase("Y")
-        || continueAdditionOfStocks.equalsIgnoreCase("y")) {
+    while (addStocks.equalsIgnoreCase("Y") || addStocks.equalsIgnoreCase("y")) {
       if (operation.checkWhetherFlexible(portfolioName)) {
         String ticker = view.showTicker();
         int quantity = view.showQuantity();
@@ -187,10 +186,10 @@ public class Controller implements IController {
       } else {
         String ticker = view.showTicker();
         int quantity = view.showQuantity();
-        action = new AddStockToPortfolio(input, ticker, quantity);
+        action = new AddStockToPortfolio(portfolioName, ticker, quantity);
       }
       view.displayInput(action.operate(operation));
-      continueAdditionOfStocks = view.showPostConfirmation();
+      addStocks = view.showPostConfirmation();
     }
     operation.writeToCSV(input);
   }
