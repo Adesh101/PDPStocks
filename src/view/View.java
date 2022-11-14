@@ -109,8 +109,8 @@ public class View implements IView {
     sb.append("          STOCKS\n");
     sb.append("----------------------------\n");
     sb.append("1. CREATE NEW PORTFOLIO\n");
-    sb.append("2. ADD STOCKS TO A PORTFOLIO\n");
-    sb.append("3. SELL STOCKS FROM A PORTFOLIO\n");
+    sb.append("2. ADD STOCKS TO A FLEXIBLE PORTFOLIO\n");
+    sb.append("3. SELL STOCKS FROM A FLEXIBLE PORTFOLIO\n");
     sb.append("4. VIEW PORTFOLIO NAMES\n");
     sb.append("5. VIEW PORTFOLIO AMOUNT BY DATE\n");
     sb.append("6. VIEW PORTFOLIO COMPOSITION\n");
@@ -410,5 +410,10 @@ public class View implements IView {
         displayInput("ENTER DATE IN YYYY-MM-DD FORMAT.");
       }
     }
+  }
+
+  @Override
+  public void showAddStock() {
+    displayInput("ENTER STOCK DETAILS TO BE ADDED TO THE PORTFOLIO.");
   }
 }

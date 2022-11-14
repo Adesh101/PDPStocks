@@ -135,13 +135,15 @@ public class csvFiles implements fileHandling {
       return false;
     }
 
-    if (cal1.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-      cal1.setTime(new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000)));
-    } else if (cal1.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+    if (cal1.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
       cal1.setTime(new Date(System.currentTimeMillis() - (2 * 24 * 60 * 60 * 1000)));
+    } else if (cal1.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY) {
+      cal1.setTime(new Date(System.currentTimeMillis() - (3 * 24 * 60 * 60 * 1000)));
+    } else {
+      cal1.setTime(new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000)));
     }
 
-    return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+      return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
         cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
   }
 

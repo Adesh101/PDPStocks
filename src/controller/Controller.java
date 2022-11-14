@@ -42,150 +42,168 @@ public class Controller implements IController {
   @Override
   public void operate(IOperation operation) {
     view.showWelcomeMessage();
-    view.showMenu();
     String menuOption = "";
-    try {
-      while (true) {
-        try {
-          menuOption = view.fetchInput();
-          break;
-        } catch (Exception ex) {
-          System.out.println("PLEASE ENTER A NUMBER FROM THE FOLLOWING OPTIONS PRESENTED ABOVE.");
-          view.fetchInput();
+    boolean flag = false;
+    while (!flag) {
+      menuOption = menuHelper();
+      try {
+        switch (menuOption) {
+          case "1":
+            createPortfolioHelper();
+            break;
+          case "2":
+            addStocksToFlexiblePortfolioHelper();
+            break;
+          case "3":
+            sellStockHelper();
+            break;
+          case "4":
+            showExistingPortfolioHelper();
+            break;
+          case "5":
+            showAmountByDateHelper();
+            break;
+          case "6":
+            showCompositionHelper();
+            break;
+          case "7":
+            showCostBasisByDateHelper();
+            break;
+          case "8":
+            break;
+          case "9":
+            flag = true;
+            break;
+          default:
+            System.out.println("INVALID RESPONSE.");
         }
+      } catch (Exception ex) {
+        view.displayInput(ex.getMessage());
       }
-      boolean flag = false;
-      while (!flag) {
-        flag = true;
-        try {
-          switch (menuOption) {
-            case "1":
-              String typeOption=view.showPortfolioTypeMenu();
-              if(typeOption.equals("1")){
-                String option = view.showPortfolioMenuOption();
-                if (option.equals("1")) {
-                  action = new CreateFlexiblePortfolio(view.showEnterNewPortfolioName(),
-                      view.showPortfolioCreationDate());
-                  view.displayInput(action.operate(operation));
-                } else if (option.equals("2")) {
-                  String fileName = view.showFileName();
-                  action = new CreateNewPortfolioCSV(fileName);
-                  view.displayInput(action.operate(operation));//;
-                }
-              }
-
-              else if (typeOption.equals("2")) {
-                String option = view.showPortfolioMenuOption();
-                if (option.equals("1")) {
-                  action = new CreateNewPortfolio(view.showEnterNewPortfolioName(),
-                      view.showPortfolioCreationDate());
-                  view.displayInput(action.operate(operation));
-                } else if (option.equals("2")) {
-                  String fileName = view.showFileName();
-                  action = new CreateNewPortfolioCSV(fileName);
-                  view.displayInput(action.operate(operation));//;
-                }
-              }
-
-//              String option = view.showPortfolioMenuOption();
-//              if (option.equals("1")) {
-//                action = new CreateNewPortfolio(view.showEnterNewPortfolioName(),
-//                    view.showPortfolioCreationDate());
-//                view.displayInput(action.operate(operation));
-//              } else if (option.equals("2")) {
-//                String fileName = view.showFileName();
-//                action = new CreateNewPortfolioCSV(fileName);
-//                view.displayInput(action.operate(operation));//;
-//              }
-              view.showMenu();
-              menuOption = view.fetchInput();
-              flag = false;
-              break;
-            case "2":
-              String continueAdditionOfStocks = "Y";
-              String input = "";
-              while (continueAdditionOfStocks.equalsIgnoreCase("Y")
-                  || continueAdditionOfStocks.equalsIgnoreCase("y")) {
-                input = view.showEnterPortfolioToAddStocks();
-                if(operation.checkWhetherFlexible(input)){
-                  action = new AddStockToFlexiblePortfolio(input, view.showTicker(), view.showQuantity(), view.showBuyDate());
-                }
-                else {
-                  action = new AddStockToPortfolio(input, view.showTicker(), view.showQuantity());
-                }
-                view.displayInput(action.operate(operation));
-                continueAdditionOfStocks = view.showPostConfirmation();
-              }
-              operation.writeToCSV(input);
-              flag = false;
-              view.showMenu();
-              menuOption = view.fetchInput();
-              break;
-            case "3":
-              String continueSellingOfStocks = "Y";
-              input = "";
-              while(continueSellingOfStocks.equalsIgnoreCase("Y")){
-                input=view.showEnterPortfolioToAddStocks();
-                action=new SellStock(input, view.showTicker(), view.showQuantity(), view.showSellDate());
-                view.displayInput(action.operate(operation));
-                continueSellingOfStocks = view.showSellConfirmation();
-              }
-              // update csv
-
-              flag=false;
-              view.showMenu();
-              menuOption = view.fetchInput();
-              break;
-            case "4":
-              action = new ShowExistingPortfolios();
-              view.displayInput(action.operate(operation));
-              flag = false;
-              view.showMenu();
-              menuOption = view.fetchInput();
-              break;
-            case "5":
-              action = new ShowAmountOfPortfolioByDate(view.showEnterNewPortfolioName(),
-                  view.showDate());
-              view.displayInput(action.operate(operation));
-              flag = false;  //NEED TO ADD FUNCTION FOR DATE VALIDATION.6
-              view.showMenu();
-              menuOption = view.fetchInput();
-              break;
-            case "6":
-              action = new ShowComposition(view.showEnterNewPortfolioName());
-              view.displayInput(action.operate(operation));
-              flag = false;
-              view.showMenu();
-              menuOption = view.fetchInput();
-              break;
-            case "7":
-              action = new CostBasisByDate(view.showEnterNewPortfolioName(), view.showCostBasisDate());
-              view.displayInput(action.operate(operation));
-              flag = false;
-              view.showMenu();
-              menuOption = view.fetchInput();
-              break;
-            case "8":
-              break;
-            case "9":
-              flag = true;
-              break;
-            default:
-              System.out.println("INVALID RESPONSE.");
-              flag = false;
-              menuOption = view.fetchInput();
-          }
-        } catch (Exception ex) {
-          view.displayInput(ex.getMessage());
-          view.showMenu();
-          menuOption = view.fetchInput();
-          flag = false;
-          flag = false;
-        }
-      }
-    } catch (Exception ex) {
-      view.displayInput(ex.getMessage());
-      view.showMenu();
     }
+  }
+
+  @Override
+  public void createPortfolioHelper() {
+    String typeOption = view.showPortfolioTypeMenu();
+    if (typeOption.equals("1")) {
+      createFlexiblePortfolio();
+    } else if (typeOption.equals("2")) {
+      createInflexiblePortfolio();
+    }
+  }
+
+  @Override
+  public void createFlexiblePortfolio() {
+    String option = view.showPortfolioMenuOption();
+    if (option.equals("1")) {
+      String portfolioName = view.showEnterNewPortfolioName();
+      String date = view.showPortfolioCreationDate();
+      action = new CreateFlexiblePortfolio(portfolioName, date);
+      view.displayInput(action.operate(operation));
+      view.showAddStock();
+      addStocksHelper(portfolioName);
+    } else if (option.equals("2")) {
+      createPortfolioCSV();
+    }
+  }
+
+  @Override
+  public void createInflexiblePortfolio() {
+    String option = view.showPortfolioMenuOption();
+    if (option.equals("1")) {
+      String portfolioName = view.showEnterNewPortfolioName();
+      String date = view.showPortfolioCreationDate();
+      action = new CreateNewPortfolio(portfolioName, date);
+      view.displayInput(action.operate(operation));
+      view.showAddStock();
+      addStocksHelper(portfolioName);
+    } else if (option.equals("2")) {
+      createPortfolioCSV();
+    }
+  }
+
+  @Override
+  public void showExistingPortfolioHelper() {
+    action = new ShowExistingPortfolios();
+    view.displayInput(action.operate(operation));
+  }
+
+  @Override
+  public void showAmountByDateHelper() {
+    String portfolioName = view.showEnterNewPortfolioName();
+    String date = view.showPortfolioCreationDate();
+    action = new ShowAmountOfPortfolioByDate(portfolioName, date);
+    view.displayInput(action.operate(operation));
+  }
+
+  @Override
+  public void showCompositionHelper() {
+    String portfolioName = view.showEnterNewPortfolioName();
+    action = new ShowComposition(portfolioName);
+    view.displayInput(action.operate(operation));
+  }
+
+  @Override
+  public void showCostBasisByDateHelper() {
+    String portfolioName = view.showEnterNewPortfolioName();
+    String costBasisDate = view.showCostBasisDate();
+    action = new CostBasisByDate(portfolioName, costBasisDate);
+    view.displayInput(action.operate(operation));
+  }
+
+  @Override
+  public void sellStockHelper() {
+    String continueSellingOfStocks = "Y";
+    String portfolioName = view.showEnterNewPortfolioName();
+    String ticker = view.showTicker();
+    int quantity = view.showQuantity();
+    String sellDate = view.showSellDate();
+    while (continueSellingOfStocks.equalsIgnoreCase("Y")) {
+      action = new SellStock(portfolioName, ticker, quantity, sellDate);
+      view.displayInput(action.operate(operation));
+      continueSellingOfStocks = view.showSellConfirmation();
+    }
+  }
+
+  @Override
+  public void createPortfolioCSV() {
+    String fileName = view.showFileName();
+    action = new CreateNewPortfolioCSV(fileName);
+    view.displayInput(action.operate(operation));
+  }
+
+  @Override
+  public void addStocksHelper(String portfolioName) {
+    String continueAdditionOfStocks = "Y";
+    String input = "";
+    while (continueAdditionOfStocks.equalsIgnoreCase("Y")
+        || continueAdditionOfStocks.equalsIgnoreCase("y")) {
+      if (operation.checkWhetherFlexible(portfolioName)) {
+        String ticker = view.showTicker();
+        int quantity = view.showQuantity();
+        String buyDate = view.showBuyDate();
+        action = new AddStockToFlexiblePortfolio(portfolioName, ticker, quantity, buyDate);
+      } else {
+        String ticker = view.showTicker();
+        int quantity = view.showQuantity();
+        action = new AddStockToPortfolio(input, ticker, quantity);
+      }
+      view.displayInput(action.operate(operation));
+      continueAdditionOfStocks = view.showPostConfirmation();
+    }
+    operation.writeToCSV(input);
+  }
+
+  @Override
+  public void addStocksToFlexiblePortfolioHelper() {
+    String portfolioName = view.showEnterNewPortfolioName();
+    addStocksHelper(portfolioName);
+  }
+
+  @Override
+  public String menuHelper() {
+    view.showMenu();
+    return view.fetchInput();
   }
 }

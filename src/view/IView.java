@@ -73,4 +73,5 @@ public interface IView {
   String showCompositionDat();
   String showCostBasisDate();
   String showSellDate();
+  void showAddStock();
 }
