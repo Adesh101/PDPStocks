@@ -33,8 +33,8 @@ public class Operation implements IOperation {
   protected double totalValue;
   protected String date;
   protected IStocks stocks;
-  protected IFlexiblePortfolio Fportfolio;
-  protected IInflexiblePortfolio IfPortfolio;
+  protected IFlexiblePortfolio flexiblePortfolio;
+  protected IInflexiblePortfolio inflexiblePortfolio;
   private static final String CSV_SEPARATOR = ",";
 
 
@@ -43,10 +43,12 @@ public class Operation implements IOperation {
    *
    * @param: stocks
    */
-  public Operation(IStocks stocks) {
+  public Operation(IInflexiblePortfolio inflexiblePortfolio, IFlexiblePortfolio flexiblePortfolio, IStocks stocks) {
     this.portfolioName = "";
     this.totalValue = 0;
     this.stocks = stocks;
+    this.inflexiblePortfolio = inflexiblePortfolio;
+    this.flexiblePortfolio = flexiblePortfolio;
   }
 
   @Override
@@ -89,7 +91,7 @@ public class Operation implements IOperation {
   }
   @Override
   public void sellStock(String portfolioName, String ticker, int quantity, double price,String date){
-    Fportfolio.sellStock(portfolioName, ticker, quantity, price, date);
+    flexiblePortfolio.sellStock(portfolioName, ticker, quantity, price, date);
   }
 
   @Override
@@ -146,41 +148,42 @@ public class Operation implements IOperation {
 
   @Override
   public void writeToCSV(String portfolioName) {
-    try {
-      BufferedWriter bw = new BufferedWriter(
-          new OutputStreamWriter(new FileOutputStream("./res/" + portfolioName + ".csv"), "UTF-8"));
-      HashMap<String, HashMap<String, List<String>>> portfolios = this.portfolios;
-      for (String individualPortfolioName : portfolios.keySet()) {
-        StringBuffer oneLine = new StringBuffer();
-        oneLine.append("Portfolio Name");
-        oneLine.append(CSV_SEPARATOR);
-        oneLine.append(portfolioName);
-        oneLine.append("\n");
-        oneLine.append("Stock");
-        oneLine.append(CSV_SEPARATOR);
-        oneLine.append("Quantity");
-        oneLine.append(CSV_SEPARATOR);
-        oneLine.append("Price");
-        oneLine.append(CSV_SEPARATOR);
-        oneLine.append("Total");
-        oneLine.append(CSV_SEPARATOR);
-        oneLine.append("\n");
-        for (String stockData : portfolios.get(individualPortfolioName).keySet()) {
-          oneLine.append(stockData);
-          oneLine.append(CSV_SEPARATOR);
-          for (String metaStockData : portfolios.get(individualPortfolioName).get(stockData)) {
-            oneLine.append(metaStockData);
-            oneLine.append(CSV_SEPARATOR);
-          }
-        }
-        bw.write(oneLine.toString());
-        bw.newLine();
-      }
-      bw.flush();
-      bw.close();
-    } catch (IOException e) {
-      System.out.println("");
-    }
+    files.writeToCSV(portfolioName, this.FlexibleMap);
+//    try {
+//      BufferedWriter bw = new BufferedWriter(
+//          new OutputStreamWriter(new FileOutputStream("./res/" + portfolioName + ".csv"), "UTF-8"));
+//      HashMap<String, HashMap<String, List<String>>> portfolios = this.portfolios;
+//      for (String individualPortfolioName : portfolios.keySet()) {
+//        StringBuffer oneLine = new StringBuffer();
+//        oneLine.append("Portfolio Name");
+//        oneLine.append(CSV_SEPARATOR);
+//        oneLine.append(portfolioName);
+//        oneLine.append("\n");
+//        oneLine.append("Stock");
+//        oneLine.append(CSV_SEPARATOR);
+//        oneLine.append("Quantity");
+//        oneLine.append(CSV_SEPARATOR);
+//        oneLine.append("Price");
+//        oneLine.append(CSV_SEPARATOR);
+//        oneLine.append("Total");
+//        oneLine.append(CSV_SEPARATOR);
+//        oneLine.append("\n");
+//        for (String stockData : portfolios.get(individualPortfolioName).keySet()) {
+//          oneLine.append(stockData);
+//          oneLine.append(CSV_SEPARATOR);
+//          for (String metaStockData : portfolios.get(individualPortfolioName).get(stockData)) {
+//            oneLine.append(metaStockData);
+//            oneLine.append(CSV_SEPARATOR);
+//          }
+//        }
+//        bw.write(oneLine.toString());
+//        bw.newLine();
+//      }
+//      bw.flush();
+//      bw.close();
+//    } catch (IOException e) {
+//      System.out.println("");
+//    }
   }
 
   @Override
@@ -353,17 +356,17 @@ public class Operation implements IOperation {
   }
   @Override
   public void getFlexibleMap(){
-    if(Fportfolio.returnMap().size()!=0)
-      FlexibleMap = Fportfolio.returnMap();
+    if(flexiblePortfolio.returnMap().size()!=0)
+      FlexibleMap = flexiblePortfolio.returnMap();
   }
   @Override
   public int getFlexibleMapSize(){
-    return Fportfolio.returnMap().size();
+    return flexiblePortfolio.returnMap().size();
   }
   @Override
   public void getInflexibleMap(){
-    if(IfPortfolio.returnMap().size()!=0)
-      InflexibleMap = IfPortfolio.returnMap();
+    if(inflexiblePortfolio.returnMap().size()!=0)
+      InflexibleMap = inflexiblePortfolio.returnMap();
   }
 
   @Override
@@ -371,19 +374,19 @@ public class Operation implements IOperation {
       double price, String date) {
    // String date=""; // Implement date logic
     this.portfolioName=portfolioName;
-    Fportfolio.buyStock(portfolioName, ticker,quantity,price,date);
+    flexiblePortfolio.buyStock(portfolioName, ticker,quantity,price,date);
   }
   @Override
   public void addStockToInFlexiblePortfolio(String portfolioName, String ticker, int quantity,
       double price) {
     String date=""; // Implement date logic
     this.portfolioName=portfolioName;
-    IfPortfolio.buyStock(portfolioName, ticker,quantity,price,date);
+    inflexiblePortfolio.buyStock(portfolioName, ticker,quantity,price,date);
   }
 
   @Override
   public double costBasisByDate(String portfolioName, String date) {
-    return Fportfolio.costBasisByDate(portfolioName, date);
+    return flexiblePortfolio.costBasisByDate(portfolioName, date);
   }
 
 
@@ -407,16 +410,16 @@ public class Operation implements IOperation {
   public void createFlexiblePortfolio(String portfolioName, String date) {
     this.portfolioName=portfolioName;
     this.date=date;
-    Fportfolio = new FlexiblePortfolio();
-    Fportfolio.createPortfolio(portfolioName,date);
+    flexiblePortfolio = new FlexiblePortfolio();
+    flexiblePortfolio.createPortfolio(portfolioName,date);
   }
 
   @Override
   public void createLockedPortfolio(String portfolioName, String date) {
     this.portfolioName=portfolioName;
     this.date=date;
-    IfPortfolio = new InflexiblePortfolio();
-    IfPortfolio.createPortfolio(portfolioName,date);
+    inflexiblePortfolio = new InflexiblePortfolio();
+    inflexiblePortfolio.createPortfolio(portfolioName,date);
   }
 
 //  @Override

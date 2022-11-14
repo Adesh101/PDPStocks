@@ -60,7 +60,8 @@ public class View implements IView {
   @Override
   public boolean isValidDate(String input) {
     String dateFormat = "yyyy-MM-dd";
-    // Check length
+    if (input.length() != 10)
+      return false;
     try {
       DateFormat df = new SimpleDateFormat(dateFormat);
       df.setLenient(false);

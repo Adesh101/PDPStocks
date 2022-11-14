@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class csvFiles implements fileHandling {
@@ -142,5 +143,52 @@ public class csvFiles implements fileHandling {
 
     return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
         cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+  }
+
+  @Override
+  public void writeToCSV(String portfolioName,
+      HashMap<String, HashMap<String, HashMap<String, List<String>>>> map) {
+    String CSV_SEPARATOR = ",";
+    try {
+      BufferedWriter bw = new BufferedWriter(
+          new OutputStreamWriter(new FileOutputStream("./res/" + portfolioName + ".csv"), "UTF-8"));
+      for (String individualPortfolioName : map.keySet()) {
+        StringBuffer oneLine = new StringBuffer();
+        oneLine.append("Portfolio Name");
+        oneLine.append(CSV_SEPARATOR);
+        oneLine.append(portfolioName);
+        oneLine.append("\n");
+        for (String date : map.get(individualPortfolioName).keySet()) {
+          oneLine.append("Date");
+          oneLine.append(CSV_SEPARATOR);
+          oneLine.append(date);
+          oneLine.append("\n");
+          oneLine.append("Stock");
+          oneLine.append(CSV_SEPARATOR);
+          oneLine.append("Quantity");
+          oneLine.append(CSV_SEPARATOR);
+          oneLine.append("Price");
+          oneLine.append(CSV_SEPARATOR);
+          oneLine.append("Total");
+          oneLine.append(CSV_SEPARATOR);
+          oneLine.append("\n");
+          for (String stock : map.get(individualPortfolioName).get(date).keySet()) {
+            oneLine.append(stock);
+            oneLine.append(CSV_SEPARATOR);
+            for (String metaData : map.get(individualPortfolioName).get(date).get(stock)) {
+              oneLine.append(metaData);
+              oneLine.append(CSV_SEPARATOR);
+            }
+            oneLine.append("\n");
+          }
+        }
+        bw.write(oneLine.toString());
+        bw.newLine();
+      }
+      bw.flush();
+      bw.close();
+    } catch (IOException e) {
+      System.out.println("");
+    }
   }
 }
