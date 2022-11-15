@@ -8,26 +8,21 @@ import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.TreeMap;
-import model.operation.IOperation;
-import model.operation.Operation;
-import model.portfolio.FlexiblePortfolio;
-import model.portfolio.IFlexiblePortfolio;
-import model.portfolio.InflexiblePortfolio;
 import model.stocks.IStocks;
 import model.stocks.Stocks;
 
 public class LineChart implements ILineChart {
 
   IStocks stocks;
-  public LineChart () {
+
+  public LineChart() {
     stocks = new Stocks();
   }
 
-
   @Override
-  public TreeMap<String, Integer> plot(HashMap<String, Integer> portfolio, String startDate, String endDate)
+  public TreeMap<String, Integer> plot(HashMap<String, Integer> portfolio, String startDate,
+      String endDate)
       throws ParseException {
     TreeMap<String, Integer> result = new TreeMap<>();
     int differenceInDays = differenceBetweenDaysInDays(startDate, endDate);
@@ -46,7 +41,7 @@ public class LineChart implements ILineChart {
       result = monthSpan(portfolio, startDate, differenceInMonths);
     } else if (differenceInMonths > 30 && noOfYears < 5) {
       int noOfMonths = 0;
-      if (differenceInDays % 3 != 0) {
+      if (differenceInMonths % 3 != 0) {
         noOfMonths = 1;
       }
       noOfMonths += differenceInMonths / 3;
@@ -59,80 +54,71 @@ public class LineChart implements ILineChart {
     return result;
   }
 
-  private TreeMap<String, Integer> daySpan(HashMap<String, Integer> portfolio, String startDate,
-      int differenceInDays) {
-    int tempValue = 0;
-    int totalValue = 0;
-    String keyValue = "";
-    Date sDate;
+  private Date parseDate(String date) {
+    Date newDate;
+    String checkDate = date;
     String pattern = "yyyy-MM-dd";
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-    int maxValue = Integer.MIN_VALUE;
-    int minValue = Integer.MAX_VALUE;
-
-    TreeMap<String, Integer> map = new TreeMap<>();
-
-    String checkDate = startDate;
     try {
-      sDate = simpleDateFormat.parse(checkDate);
+      newDate = simpleDateFormat.parse(checkDate);
     } catch (ParseException e) {
       throw new RuntimeException(e);
     }
+    return newDate;
+  }
+
+  private int getTotalValue(HashMap<String, Integer> portfolio, String startDate) {
+    int tempValue = 0;
+    int totalValue = 0;
+    for (String ticker : portfolio.keySet()) {
+      startDate = stocks.isWeekend(startDate);
+      tempValue = (int) (portfolio.get(ticker) * stocks.getPriceByDate(ticker, startDate));
+      totalValue += tempValue;
+    }
+    return totalValue;
+  }
+
+  private TreeMap<String, Integer> daySpan(HashMap<String, Integer> portfolio, String startDate,
+      int differenceInDays) {
+    int totalValue = 0;
+    Date sDate = parseDate(startDate);
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    int maxValue = Integer.MIN_VALUE;
+    TreeMap<String, Integer> map = new TreeMap<>();
 
     while (differenceInDays > 0) {
-      keyValue = startDate;
-
-      for (String ticker : portfolio.keySet()) {
-        startDate = stocks.isWeekend(startDate);
-        tempValue = (int) (portfolio.get(ticker) * stocks.getPriceByDate(ticker, startDate));
-        totalValue += tempValue;
-      }
-      map.put(keyValue, totalValue);
+      totalValue = getTotalValue(portfolio, startDate);
+      map.put(startDate, totalValue);
       maxValue = Math.max(maxValue, totalValue);
-      minValue = Math.min(minValue, totalValue);
-
       sDate = increaseDate(sDate, 1);
       startDate = simpleDateFormat.format(sDate);
-
-      totalValue = 0;
       differenceInDays--;
     }
-    return getCount(map, maxValue/10);
+    return getCount(map, maxValue / 10);
   }
 
   private TreeMap<String, Integer> weekSpan(HashMap<String, Integer> portfolio, String startDate,
       int noOfWeeks) {
-    int tempValue = 0;
     int totalValue = 0;
-    String keyValue = "";
+    Date sDate = parseDate(startDate);
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     int maxValue = Integer.MIN_VALUE;
     TreeMap<String, Integer> map = new TreeMap<>();
 
     while (noOfWeeks > 0) {
-      keyValue = startDate.length() > 2 ? startDate.substring(startDate.length() - 2) : startDate;
-      keyValue += " ";
-      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM");
-      keyValue += simpleDateFormat.format(startDate).toUpperCase();
-
-      for (String ticker : portfolio.keySet()) {
-        startDate = stocks.isWeekend(startDate);
-        tempValue = (int) (portfolio.get(ticker) * stocks.getPriceByDate(ticker, startDate));
-        totalValue += tempValue;
-      }
-      map.put(keyValue, totalValue);
+      totalValue = getTotalValue(portfolio, startDate);
+      map.put(startDate, totalValue);
       maxValue = Math.max(maxValue, totalValue);
-
-     // startDate = increaseDate(startDate, 7);
-
-      totalValue = 0;
+      sDate = increaseDate(sDate, 7);
+      startDate = simpleDateFormat.format(sDate);
       noOfWeeks--;
     }
-    return getCount(map, maxValue / 50);
+    return getCount(map, maxValue / 10);
   }
 
   private TreeMap<String, Integer> monthSpan(HashMap<String, Integer> portfolio, String startDate,
       int noOfMonths) {
-    int tempValue = 0;
+    Date sDate = parseDate(startDate);
     int totalValue = 0;
     String keyValue = "";
     int maxValue = Integer.MIN_VALUE;
@@ -140,27 +126,23 @@ public class LineChart implements ILineChart {
 
     while (noOfMonths > 0) {
       SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM yyyy");
-      keyValue += simpleDateFormat.format(startDate).toUpperCase();
-
-      for (String ticker : portfolio.keySet()) {
-        startDate = stocks.isWeekend(startDate);
-        tempValue = (int) (portfolio.get(ticker) * stocks.getPriceByDate(ticker, startDate));
-        totalValue += tempValue;
-      }
+      keyValue += simpleDateFormat.format(sDate).toUpperCase();
+      totalValue = getTotalValue(portfolio, startDate);
       map.put(keyValue, totalValue);
       maxValue = Math.max(maxValue, totalValue);
-
-      startDate = increaseDateMonthly(startDate, 1);
-
-      totalValue = 0;
+      sDate = increaseDateMonthly(sDate, 1);
+      simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      startDate = simpleDateFormat.format(sDate);
+      keyValue = "";
       noOfMonths--;
     }
-    return getCount(map, maxValue / 50);
+    return getCount(map, maxValue / 10);
   }
 
-  private TreeMap<String, Integer> threeMonthSpan(HashMap<String, Integer> portfolio, String startDate,
+  private TreeMap<String, Integer> threeMonthSpan(HashMap<String, Integer> portfolio,
+      String startDate,
       int noOfMonths) {
-    int tempValue = 0;
+    Date sDate = parseDate(startDate);
     int totalValue = 0;
     String keyValue = "";
     int maxValue = Integer.MIN_VALUE;
@@ -168,50 +150,40 @@ public class LineChart implements ILineChart {
 
     while (noOfMonths > 0) {
       SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM yyyy");
-      keyValue += simpleDateFormat.format(startDate).toUpperCase();
-
-      for (String ticker : portfolio.keySet()) {
-        startDate = stocks.isWeekend(startDate);
-        tempValue = (int) (portfolio.get(ticker) * stocks.getPriceByDate(ticker, startDate));
-        totalValue += tempValue;
-      }
+      keyValue += simpleDateFormat.format(sDate).toUpperCase();
+      totalValue = getTotalValue(portfolio, startDate);
       map.put(keyValue, totalValue);
       maxValue = Math.max(maxValue, totalValue);
-
-      startDate = increaseDateMonthly(startDate, 3);
-
-      totalValue = 0;
+      sDate = increaseDateMonthly(sDate, 3);
+      simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      startDate = simpleDateFormat.format(sDate);
+      keyValue = "";
       noOfMonths--;
     }
-    return getCount(map, maxValue / 50);
+    return getCount(map, maxValue / 10);
   }
 
   private TreeMap<String, Integer> yearSpan(HashMap<String, Integer> portfolio, String startDate,
       int noOfYears) {
-    int tempValue = 0;
+    Date sDate = parseDate(startDate);
     int totalValue = 0;
     String keyValue = "";
     int maxValue = Integer.MIN_VALUE;
     TreeMap<String, Integer> map = new TreeMap<>();
 
     while (noOfYears > 0) {
-      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM yyyy");
-      keyValue += simpleDateFormat.format(startDate).toUpperCase();
-
-      for (String ticker : portfolio.keySet()) {
-        startDate = stocks.isWeekend(startDate);
-        tempValue = (int) (portfolio.get(ticker) * stocks.getPriceByDate(ticker, startDate));
-        totalValue += tempValue;
-      }
+      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+      keyValue += simpleDateFormat.format(sDate).toUpperCase();
+      totalValue = getTotalValue(portfolio, startDate);
       map.put(keyValue, totalValue);
       maxValue = Math.max(maxValue, totalValue);
-
-      startDate = increaseDateYearly(startDate);
-
-      totalValue = 0;
+      sDate = increaseDateYearly(sDate);
+      simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      startDate = simpleDateFormat.format(sDate);
+      keyValue = "";
       noOfYears--;
     }
-    return getCount(map, maxValue / 50);
+    return getCount(map, maxValue / 10);
   }
 
   private int differenceBetweenDaysInDays(String startDate, String endDate) {
@@ -263,26 +235,26 @@ public class LineChart implements ILineChart {
     return date;
   }
 
-  private String increaseDateMonthly(String date, int noOfMonths) {
+  private Date increaseDateMonthly(Date date, int noOfMonths) {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Calendar c = Calendar.getInstance();
     try {
-      c.setTime(simpleDateFormat.parse(date));
+      c.setTime(date);
       c.add(Calendar.MONTH, noOfMonths);
-      date = simpleDateFormat.format(c.getTime());
+      date = simpleDateFormat.parse(simpleDateFormat.format(c.getTime()));
     } catch (ParseException e) {
       System.out.println(e.getMessage());
     }
     return date;
   }
 
-  private String increaseDateYearly(String date) {
+  private Date increaseDateYearly(Date date) {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Calendar c = Calendar.getInstance();
     try {
-      c.setTime(simpleDateFormat.parse(date));
+      c.setTime(date);
       c.add(Calendar.YEAR, 1);
-      date = simpleDateFormat.format(c.getTime());
+      date = simpleDateFormat.parse(simpleDateFormat.format(c.getTime()));
     } catch (ParseException e) {
       System.out.println(e.getMessage());
     }

@@ -204,7 +204,7 @@ public class Controller implements IController {
   @Override
   public void showGraph() {
     String portfolioName = view.showEnterNewPortfolioName();
-    TreeMap<String, Integer> map = operation.getGraph(portfolioName, "2022-11-01", "2022-11-10");
+    TreeMap<String, Integer> map = operation.getGraph(portfolioName, "2016-11-01", "2022-02-10");
     System.out.println(map);
   }
 

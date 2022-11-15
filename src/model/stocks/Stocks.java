@@ -119,6 +119,24 @@ public class Stocks implements IStocks {
   @Override
   public double getPriceByDate(String ticker, String date) {
     csvFiles file = new csvFiles();
-    return Double.parseDouble(file.readFromLocalData(ticker, date)[4]);
+    double price = 0;
+    try {
+      price = Double.parseDouble(file.readFromLocalData(ticker, date)[4]);
+      return price;
+    } catch (NullPointerException e) {
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+      Date newDate;
+      Calendar c = Calendar.getInstance();
+      try {
+        c.setTime(sdf.parse(date));
+        c.add(Calendar.DATE, -1);
+        newDate = sdf.parse(sdf.format(c.getTime()));
+        String validDate = sdf.format(newDate);
+        price = getPriceByDate(ticker, validDate);
+      } catch (ParseException ex) {
+        System.out.println(ex.getMessage());
+      }
+    }
+    return price;
   }
 }
