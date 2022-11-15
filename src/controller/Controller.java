@@ -11,6 +11,7 @@ import controller.actions.SellStock;
 import controller.actions.ShowAmountOfPortfolioByDate;
 import controller.actions.ShowComposition;
 import controller.actions.ShowExistingPortfolios;
+import java.util.TreeMap;
 import model.operation.IOperation;
 import view.IView;
 
@@ -203,7 +204,8 @@ public class Controller implements IController {
   @Override
   public void showGraph() {
     String portfolioName = view.showEnterNewPortfolioName();
-
+    TreeMap<String, Integer> map = operation.getGraph(portfolioName, "2022-11-01", "2022-11-10");
+    System.out.println(map);
   }
 
   @Override

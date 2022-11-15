@@ -1,8 +1,12 @@
 package model.operation;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TreeMap;
 import model.filehandling.csvFiles;
+import model.plot.ILineChart;
+import model.plot.LineChart;
 import model.portfolio.FlexiblePortfolio;
 import model.portfolio.IFlexiblePortfolio;
 import model.portfolio.IInflexiblePortfolio;
@@ -22,6 +26,7 @@ public class Operation implements IOperation {
       = new HashMap<String, HashMap<String, List<String>>>();
   protected String portfolioName;
   csvFiles files = new csvFiles();
+  ILineChart lineChart = new LineChart();
   protected HashMap<String, HashMap<String, HashMap<String, List<String>>>> FlexibleMap
       = new HashMap<String, HashMap<String, HashMap<String, List<String>>>>();
   protected HashMap<String, HashMap<String, List<String>>> InflexibleMap
@@ -109,6 +114,18 @@ public class Operation implements IOperation {
           map.put(ticker, quantity);
         }
       }
+    }
+    return map;
+  }
+
+  @Override
+  public TreeMap<String, Integer> getGraph(String portfolioName, String startDate, String endDate) {
+    HashMap<String, Integer> portfolioData = returnPortfolioData(portfolioName);
+    TreeMap<String, Integer> map;
+    try {
+      map = lineChart.plot(portfolioData, startDate, endDate);
+    } catch (ParseException e) {
+      throw new RuntimeException(e);
     }
     return map;
   }

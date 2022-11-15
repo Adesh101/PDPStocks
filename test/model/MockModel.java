@@ -3,6 +3,7 @@ package model;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 import model.operation.IOperation;
 
 /**
@@ -55,6 +56,11 @@ public class MockModel implements IOperation {
   public boolean isTickerValid(String ticker) {
     log.append("TICKER: " + ticker + "\n");
     return true;
+  }
+
+  @Override
+  public HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap() {
+    return null;
   }
 
   @Override
@@ -163,5 +169,21 @@ public class MockModel implements IOperation {
   @Override
   public void sellStock(String portfolioName, String ticker, int quantity, double price, String date) {
 
+  }
+
+  @Override
+  public HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap(
+      String portfolioName) {
+    return null;
+  }
+
+  @Override
+  public HashMap<String, Integer> returnPortfolioData(String portfolioName) {
+    return null;
+  }
+
+  @Override
+  public TreeMap<String, Integer> getGraph(String portfolioName, String startDate, String endDate) {
+    return null;
   }
 }

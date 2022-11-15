@@ -3,6 +3,7 @@ package model.operation;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * This is an interface for the operations to be performed.
@@ -126,6 +127,8 @@ public interface IOperation {
   HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap(String portfolioName);
 
   HashMap<String, Integer> returnPortfolioData(String portfolioName);
+
+  TreeMap<String, Integer> getGraph(String portfolioName, String startDate, String endDate);
 
 //  void writeToCSVFlexible(String name);
 //  void writeToCSVInflexible(String name);
