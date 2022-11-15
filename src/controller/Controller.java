@@ -70,7 +70,7 @@ public class Controller implements IController {
             showCostBasisByDateHelper();
             break;
           case "8":
-            break;
+            showGraph();
           case "9":
             flag = true;
             break;
@@ -198,6 +198,12 @@ public class Controller implements IController {
   public void addStocksToFlexiblePortfolioHelper() {
     String portfolioName = view.showEnterNewPortfolioName();
     addStocksHelper(portfolioName);
+  }
+
+  @Override
+  public void showGraph() {
+    String portfolioName = view.showEnterNewPortfolioName();
+
   }
 
   @Override

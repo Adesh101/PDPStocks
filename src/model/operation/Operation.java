@@ -9,11 +9,7 @@ import model.portfolio.IInflexiblePortfolio;
 import model.portfolio.InflexiblePortfolio;
 import model.stocks.IStocks;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,6 +91,29 @@ public class Operation implements IOperation {
   }
 
   @Override
+  public HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap(
+      String portfolioName) {
+    return null;
+  }
+
+  @Override
+  public HashMap<String, Integer> returnPortfolioData(String portfolioName) {
+    HashMap<String, Integer> map = new HashMap<>();
+    for (String stockDates : FlexibleMap.get(portfolioName).keySet()) {
+      for (String ticker : FlexibleMap.get(portfolioName).get(stockDates).keySet()) {
+        int quantity = Integer.parseInt(
+            FlexibleMap.get(portfolioName).get(stockDates).get(ticker).get(0));
+        if (map.containsKey(ticker)) {
+          map.put(ticker, map.get(ticker) + quantity);
+        } else {
+          map.put(ticker, quantity);
+        }
+      }
+    }
+    return map;
+  }
+
+  @Override
   public boolean checkPortfolioAlreadyExists(String name) {
     return portfolios.containsKey(name);
   }
@@ -144,6 +163,11 @@ public class Operation implements IOperation {
   @Override
   public boolean isTickerValid(String ticker) {
     return files.isTickerValid(ticker);
+  }
+
+  @Override
+  public HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap(){
+    return FlexibleMap;
   }
 
   @Override

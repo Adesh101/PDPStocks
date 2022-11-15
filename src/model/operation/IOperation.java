@@ -59,6 +59,8 @@ public interface IOperation {
    */
   boolean isTickerValid(String ticker);
 
+  HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap();
+
   /**
    * A method to write the portfolio data to a csv file.
    * @param: portfolios (hashmap)
@@ -121,6 +123,10 @@ public interface IOperation {
   double costBasisByDate(String portfolioName, String date);
   int getFlexibleMapSize();
   void sellStock(String portfolioName, String ticker, int quantity, double price, String date);
+  HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap(String portfolioName);
+
+  HashMap<String, Integer> returnPortfolioData(String portfolioName);
+
 //  void writeToCSVFlexible(String name);
 //  void writeToCSVInflexible(String name);
 }

@@ -22,5 +22,6 @@ public interface IController {
   void createPortfolioCSV();
   void addStocksHelper(String portfolioName);
   void addStocksToFlexiblePortfolioHelper();
+  void showGraph();
   String menuHelper();
 }
