@@ -29,11 +29,14 @@ public class IViewTest {
         + "          STOCKS\n"
         + "----------------------------\n"
         + "1. CREATE NEW PORTFOLIO\n"
-        + "2. ADD STOCKS TO A PORTFOLIO\n"
-        + "3. VIEW PORTFOLIO NAMES\n"
-        + "4. VIEW PORTFOLIO AMOUNT BY DATE\n"
-        + "5. VIEW PORTFOLIO COMPOSITION\n"
-        + "6. QUIT\n"
+        + "2. ADD STOCKS TO A FLEXIBLE PORTFOLIO\n"
+        + "3. SELL STOCKS FROM A FLEXIBLE PORTFOLIO\n"
+        + "4. VIEW PORTFOLIO NAMES\n"
+        + "5. VIEW PORTFOLIO AMOUNT BY DATE\n"
+        + "6. VIEW PORTFOLIO COMPOSITION\n"
+        + "7. VIEW COST BASIS OF A PORTFOLIO FOR A GIVEN DATE\n"
+        + "8. VIEW PERFORMANCE GRAPH\n"
+        + "9. QUIT\n"
         + "------------------------------\n";
     assertEquals(expectedString, out.toString());
   }

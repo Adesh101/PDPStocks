@@ -106,32 +106,36 @@ public class MockModel implements IOperation {
 
   @Override
   public String[] callStockAPI(String ticker, String date) {
+    log.append("STOCK NAME: "+ ticker+" DATE: "+ date+"\n");
     return new String[0];
   }
 
   @Override
   public void createFlexiblePortfolio(String portfolioName, String date) {
-
+    log.append("PORTFOLIO NAME: " + portfolioName + " " + " DATE: " + date + "\n");
   }
 
   @Override
   public void createLockedPortfolio(String portfolioName) {
-
+    log.append("PORTFOLIO NAME: "+ portfolioName+"\n");
   }
 
   @Override
   public Date yesterdaysDate() {
+
     return null;
   }
 
   @Override
   public boolean checkWhetherFlexible(String portFolioName) {
-    return false;
+    log.append("PORTFOLIO NAME: "+ portFolioName+"\n");
+    return true;
   }
 
   @Override
   public boolean checkWhetherInflexible(String portFolioName) {
-    return false;
+    log.append("PORTFOLIO NAME: "+portFolioName+"\n");
+    return true;
   }
 
   @Override
@@ -147,13 +151,13 @@ public class MockModel implements IOperation {
   @Override
   public void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity,
       double price, String date, double fee) {
-
+    log.append("PORTFOLIO NAME: "+portfolioName+" STOCK: "+ticker+" QUANTITY: "+ quantity+" PRICE: "+price+" DATE: "+date+" FEE: "+fee+"\n");
   }
 
   @Override
   public void addStockToInFlexiblePortfolio(String portfolioName, String ticker, int quantity,
       double price) {
-
+    log.append("PORTFOLIO NAME: "+portfolioName+" STOCK: "+ticker+" QUANTITY: "+ quantity+" PRICE: "+price+"\n");
   }
 
   @Override

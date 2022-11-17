@@ -72,25 +72,6 @@ public class View implements IView {
       return false;
     }
   }
-
-  @Override
-  public String showDate() {
-    while (true) {
-      displayInput("ENTER DATE TO SEE PORTFOLIO VALUE (FORMAT: YYYY-MM-DD):");
-      String date = nextInput();
-      if (isValidDate(date)) {
-        return date;
-      } else {
-        displayInput("ENTER DATE IN YYYY-MM-DD FORMAT.");
-      }
-    }
-  }
-
-  @Override
-  public String showStockMenu() {
-    return null;
-  }
-
   @Override
   public void showWelcomeMessage() {
     StringBuilder sb = new StringBuilder();
@@ -232,10 +213,6 @@ public class View implements IView {
     }
   }
 
-  @Override
-  public void showInvalidPortfolioName() {
-    displayInput("ENTER VALID PORTFOLIO NAME.");
-  }
 
   @Override
   public String showFileName() {
@@ -243,96 +220,6 @@ public class View implements IView {
     return nextInput();
   }
 
-  @Override
-  public void showInvalidFileError() {
-    displayInput("INVALID FILE.");
-  }
-
-  @Override
-  public void showOrderCompleted() {
-    displayInput("ORDER COMPLETED.");
-  }
-
-  @Override
-  public void showMenuMessage() {
-    displayInput("PORTFOLIO LOCKED!");
-    displayInput("EXITING TO MAIN MENU.");
-  }
-
-  @Override
-  public void showPortfolioNames(String[] names) {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < names.length; i++) {
-      sb.append(i + 1 + " " + names[i]).append("\n");
-    }
-    displayInput(sb.toString());
-  }
-
-  @Override
-  public String showEnterPortfolioToAddStocks() {
-    displayInput("ENTER PORTFOLIO NAME:");
-    return nextInput();
-  }
-
-  @Override
-  public void showValidPortfolio() {
-    displayInput("PORTFOLIO FOUND.");
-  }
-
-  @Override
-  public void showPortfolioMessage() {
-    displayInput("ENTER PORTFOLIO NAME:");
-  }
-
-  @Override
-  public void showStockPortfolio(String[][] composition) {
-    StringBuilder sb = new StringBuilder();
-    sb.append("YOUR PORTFOLIO COMPOSITION IS: \n");
-    for (int i = 0; i < composition.length; i++) {
-      int j = 0;
-      sb.append("TICKER : ");
-      sb.append(composition[i][j]);
-      sb.append(" QUANTITY: ");
-      sb.append(composition[i][++j]);
-      sb.append(" BUY PRICE : ");
-      sb.append(composition[i][++j]);
-      sb.append(" CURRENT VALUE : ");
-      sb.append(composition[i][++j]);
-      sb.append("\n");
-    }
-    displayInput(sb.toString());
-  }
-
-  @Override
-  public void showAllPortfolioNames(String names) {
-    displayInput(names);
-  }
-
-  @Override
-  public void showTickerError() {
-    displayInput("ENTER VALID TICKER.");
-  }
-
-  @Override
-  public void showPortfolioLockedError() {
-    displayInput("THIS PORTFOLIO IS LOCKED.");
-    displayInput("ENTER UNLOCKED PORTFOLIO NAME OR CREATE A NEW PORTFOLIO.");
-  }
-
-  @Override
-  public void showPortfolioExists() {
-    displayInput("PORTFOLIO ALREADY EXISTS");
-  }
-
-  @Override
-  public void showPortfolioCreatedSuccessfully(String name) {
-    displayInput("PORTFOLIO " + name + " CREATED SUCCESFULLY!");
-  }
-
-  @Override
-  public void showNoPortfoliosPresent() {
-    displayInput("No portfolios Found");
-  }
 
   @Override
   public String showPortfolioCreationDate() {
@@ -362,32 +249,6 @@ public class View implements IView {
     }
   }
 
-  @Override
-  public String showInflexiblePortfolioMenu() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("1. CREATE NEW COMPOSITION\n");
-    sb.append("2. GET EXISTING COMPOSITION FROM CSV");
-    displayInput(sb.toString());
-    while (true) {
-      String option = nextInput();
-      if (option.equals("1") || option.equals("2")) {
-        return option;
-      }
-      displayInput("INVALID INPUT.");
-    }
-  }
-  @Override
-  public String showCompositionDat(){
-    while (true) {
-      displayInput("ENTER DATE WHOSE COMPOSITION IS NEEDED (FORMAT: YYYY-MM-DD):");
-      String date = nextInput();
-      if (isValidDate(date)) {
-        return date;
-      } else {
-        displayInput("ENTER DATE IN YYYY-MM-DD FORMAT.");
-      }
-    }
-  }
   @Override
   public String showCostBasisDate() {
     while (true) {
