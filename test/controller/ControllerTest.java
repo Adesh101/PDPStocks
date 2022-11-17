@@ -31,8 +31,22 @@ public class ControllerTest {
   }
 
   @Test
-  public void testCreatePortfolio() {
-    in = new StringReader("1\n1\nabc\n6");
+  public void testCreateFlexiblePortfolio() {
+    in = new StringReader("1\n1\n1\nabc\n2022-01-01\nAAPL\n23\n2022-09-14\n12\nN\n9");
+    view = new View(in, out);
+    controller = new Controller(model, view);
+    controller.operate(model);
+    assertEquals("PORTFOLIO NAME: abc  DATE: 2022-01-01\n"
+        + "PORTFOLIO NAME: abc\n"
+        + "PORTFOLIO NAME: abc\n"
+        + "TICKER: AAPL\n"
+        + "STOCK NAME: AAPL DATE: 2022-09-14\n", log.toString());
+
+  }
+
+  @Test
+  public void testCreateInflexiblePortfolio() {
+    in = new StringReader("1\n2\n1\nabc\nAAPL\n23\nN\n9");
     view = new View(in, out);
     controller = new Controller(model, view);
     controller.operate(model);
@@ -135,5 +149,49 @@ public class ControllerTest {
             + "PORTFOLIO NAME: abc  DATE: 2022-10-10\n",
         log.toString());
   }
-
+  @Test
+  public void testSellStock(){
+    model = new MockModel(log);
+    in = new StringReader("1\n1\n1\nabc\n2022-01-01\nAAPL\n234\n2022-09-14\n12\nN\n3\nabc\nAAPL\n100\n2022-09-16\n12\nN\n9");
+    view = new View(in, out);
+    controller = new Controller(model, view);
+    controller.operate(model);
+    assertEquals("PORTFOLIO NAME: abc  DATE: 2022-01-01\n"
+        + "PORTFOLIO NAME: abc\n"
+        + "PORTFOLIO NAME: abc\n"
+        + "TICKER: AAPL\n"
+        + "STOCK NAME: AAPL DATE: 2022-09-14\n"
+        + "PORTFOLIO NAME: abc\n"
+        + "PORTFOLIO NAME: abc\n",log.toString());
+  }
+  @Test
+  public void testCostBasis(){
+    model = new MockModel(log);
+    in = new StringReader("1\n1\n1\nabc\n2022-01-01\nAAPL\n234\n2022-09-14\n12\nN\n7\nabc\n2022-11-15\n9");
+    view = new View(in, out);
+    controller = new Controller(model, view);
+    controller.operate(model);
+    assertEquals("PORTFOLIO NAME: abc  DATE: 2022-01-01\n"
+        + "PORTFOLIO NAME: abc\n"
+        + "PORTFOLIO NAME: abc\n"
+        + "TICKER: AAPL\n"
+        + "STOCK NAME: AAPL DATE: 2022-09-14\n"
+        + "PORTFOLIO NAME: abc\n"
+        + "PORTFOLIO NAME: abc DATE: 2022-11-15",log.toString());
+  }
+  @Test
+  public void testPerformanceGraph(){
+    model = new MockModel(log);
+    in = new StringReader("1\n1\n1\nabc\n2022-01-01\nAAPL\n234\n2022-09-14\n12\nN\n8\nabc\n2022-09-15\n2022-11-15\n9");
+    view = new View(in, out);
+    controller = new Controller(model, view);
+    controller.operate(model);
+    assertEquals("PORTFOLIO NAME: abc  DATE: 2022-01-01\n"
+        + "PORTFOLIO NAME: abc\n"
+        + "PORTFOLIO NAME: abc\n"
+        + "TICKER: AAPL\n"
+        + "STOCK NAME: AAPL DATE: 2022-09-14\n"
+        + "PORTFOLIO NAME: abc\n"
+        + "PORTFOLIO NAME: abc START DATE: 2022-09-15 END DATE: 2022-11-15\n",log.toString());
+  }
 }

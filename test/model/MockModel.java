@@ -53,11 +53,6 @@ public class MockModel implements IOperation {
   }
 
   @Override
-  public HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap() {
-    return null;
-  }
-
-  @Override
   public void writeToCSV(String portfolios) {
     log.append("HASHMAP: " + portfolios + "\n");
   }

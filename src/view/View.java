@@ -330,4 +330,16 @@ public class View implements IView {
       }
     }
   }
+  @Override
+  public String showPortfolioValueByDate() {
+    while (true) {
+      displayInput("ENTER DATE WHOSE VALUE IS NEEDED (FORMAT: YYYY-MM-DD):");
+      String date = nextInput();
+      if (isValidDate(date)) {
+        return date;
+      } else {
+        displayInput("ENTER DATE IN YYYY-MM-DD FORMAT.");
+      }
+    }
+  }
 }

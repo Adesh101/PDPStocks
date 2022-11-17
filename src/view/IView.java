@@ -185,4 +185,10 @@ public interface IView {
    * @return end date
    */
   String showGraphEndDate();
+
+  /**
+   * A method to get date to calculate portfolio value.
+   * @return date
+   */
+  String showPortfolioValueByDate();
 }

@@ -101,6 +101,9 @@ public class Operation implements IOperation {
   @Override
   public void sellStock(String portfolioName, String ticker, int quantity, double price,
       String date, double fee) {
+    if(date.compareTo(creationDateMap.get(portfolioName))<0){
+      throw new IllegalArgumentException("PORTFOLIO DOESNT EXIST FOR THIS DATE");
+    }
     flexiblePortfolio.sellStock(portfolioName, ticker, quantity, price, date, fee);
   }
 
@@ -315,7 +318,8 @@ public class Operation implements IOperation {
     date = getPreviousDate(map, date, name);
     double portfolioValue = 0.00;
     for (String stock : map.get(name).get(date).keySet()) {
-      portfolioValue += stocks.getPriceByDate(stock, date);
+      portfolioValue = portfolioValue+(stocks.getPriceByDate(stock, date) *
+          Double.parseDouble(map.get(name).get(date).get(stock).get(0)));
     }
     return portfolioValue;
   }

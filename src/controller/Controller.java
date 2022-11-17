@@ -133,7 +133,7 @@ public class Controller implements IController {
   @Override
   public void showAmountByDateHelper() {
     String portfolioName = view.showEnterNewPortfolioName();
-    String date = view.showPortfolioCreationDate();
+    String date = view.showPortfolioValueByDate();
     action = new ShowAmountOfPortfolioByDate(portfolioName, date);
     view.displayInput(action.operate(operation));
   }

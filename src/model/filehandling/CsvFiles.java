@@ -77,7 +77,7 @@ public class CsvFiles implements FileHandling {
     try {
       BufferedReader br = new BufferedReader(new FileReader("./sticker/stickers.txt"));
       while ((line = br.readLine()) != null) {
-        if (line.equals(ticker)) {
+        if (line.equalsIgnoreCase(ticker)) {
           return true;
         }
       }
