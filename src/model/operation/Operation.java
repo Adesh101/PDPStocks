@@ -156,6 +156,12 @@ public class Operation implements IOperation {
   public TreeMap<String, Integer> getGraph(String portfolioName, String startDate, String endDate) {
     HashMap<String, Integer> portfolioData = returnPortfolioData(portfolioName);
     TreeMap<String, Integer> map;
+    if(!checkWhetherFlexible(portfolioName) && !checkWhetherInflexible(portfolioName)){
+      throw new IllegalArgumentException("No such portfolio Exists");
+    }
+    if(creationDateMap.get(portfolioName).compareTo(startDate)>0){
+      throw new IllegalArgumentException("Start date should be after the creation date");
+    }
     try {
       map = lineChart.plot(portfolioData, startDate, endDate);
     } catch (ParseException e) {
@@ -322,6 +328,9 @@ public class Operation implements IOperation {
 //    StringBuilder sb = new StringBuilder();
 //    String finalString = "";
     //if (checkPortfolioAlreadyExists(portfolioName)) {
+    if(!checkWhetherFlexible(portfolioName) && !checkWhetherInflexible(portfolioName)){
+      throw new IllegalArgumentException("No such portfolio Exists");
+    }
     if(checkWhetherFlexible(portfolioName)){
       return getFlexibleComposition(FlexibleMap,portfolioName);
     } else if (checkWhetherInflexible(portfolioName)) {
@@ -369,6 +378,9 @@ public class Operation implements IOperation {
   public double getPortfolioByDate(String portfolioName, String date) {
     date = stocks.isWeekend(date);
     double finalValue=0;
+    if(!checkWhetherFlexible(portfolioName) && !checkWhetherInflexible(portfolioName)){
+      throw new IllegalArgumentException("No such portfolio Exists");
+    }
     if(checkWhetherFlexible(portfolioName)){
       if(creationDateMap.get(portfolioName).compareTo(date)>0)
         return 0.00;
@@ -443,10 +455,13 @@ public class Operation implements IOperation {
 
   @Override
   public double costBasisByDate(String portfolioName, String date) {
+    if(!checkWhetherFlexible(portfolioName) && !checkWhetherInflexible(portfolioName)){
+      throw new IllegalArgumentException("No such portfolio Exists");
+    }
     if(checkWhetherFlexible(portfolioName))
       date=getPreviousDate(FlexibleMap,date,portfolioName);
-    else if (checkWhetherInflexible(portfolioName))
-      date=getPreviousDate(InflexibleMap,date,portfolioName);
+//    else if (checkWhetherInflexible(portfolioName))
+//      date=getPreviousDate(InflexibleMap,date,portfolioName);
     return flexiblePortfolio.costBasisByDate(portfolioName, date);
   }
 
@@ -471,9 +486,17 @@ public class Operation implements IOperation {
   public void createFlexiblePortfolio(String portfolioName, String date) {
     this.portfolioName=portfolioName;
     this.date=date;
-    creationDateMap.put(portfolioName,date);
-    flexiblePortfolio = new FlexiblePortfolio();
-    flexiblePortfolio.createPortfolio(portfolioName,date);
+    if(checkWhetherInflexible(portfolioName)){
+      throw new IllegalArgumentException("Inflexible portfolio with this name already exists");
+    } else if (checkWhetherFlexible(portfolioName)) {
+      throw new IllegalArgumentException("Flexible portfolio with this name already exists");
+    }
+    else if(!checkWhetherFlexible(portfolioName) && !checkWhetherInflexible(portfolioName)) {
+      creationDateMap.put(portfolioName, date);
+      flexiblePortfolio = new FlexiblePortfolio();
+      flexiblePortfolio.createPortfolio(portfolioName, date);
+    }
+
   }
 
   @Override
@@ -483,9 +506,17 @@ public class Operation implements IOperation {
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
     Date d = new Date();
     String inflexPortfolioDate=dateFormat.format(d);
-    creationDateMap.put(portfolioName,inflexPortfolioDate);
-    inflexiblePortfolio = new InflexiblePortfolio();
-    inflexiblePortfolio.createPortfolio(portfolioName,date);
+    if(checkWhetherInflexible(portfolioName)){
+      throw new IllegalArgumentException("Inflexible portfolio with this name already exists");
+    } else if (checkWhetherFlexible(portfolioName)) {
+      throw new IllegalArgumentException("Flexible portfolio with this name already exists");
+    }
+    else if(!checkWhetherFlexible(portfolioName) && !checkWhetherInflexible(portfolioName)) {
+      creationDateMap.put(portfolioName,inflexPortfolioDate);
+      inflexiblePortfolio = new InflexiblePortfolio();
+      inflexiblePortfolio.createPortfolio(portfolioName,date);
+    }
+
   }
 
 //  @Override

@@ -148,23 +148,33 @@ public class Controller implements IController {
   @Override
   public void showCostBasisByDateHelper() {
     String portfolioName = view.showEnterNewPortfolioName();
-    String costBasisDate = view.showCostBasisDate();
-    action = new CostBasisByDate(portfolioName, costBasisDate);
-    view.displayInput(action.operate(operation));
+    if(operation.checkWhetherFlexible(portfolioName)) {
+      String costBasisDate = view.showCostBasisDate();
+      action = new CostBasisByDate(portfolioName, costBasisDate);
+      view.displayInput(action.operate(operation));
+    }
+    else {
+      throw new IllegalArgumentException("Operation supported only for Flexible portfolios");
+    }
   }
 
   @Override
   public void sellStockHelper() {
     String continueSellingOfStocks = "Y";
     String portfolioName = view.showEnterNewPortfolioName();
-    String ticker = view.showTicker();
-    int quantity = view.showQuantity();
-    String sellDate = view.showSellDate();
-    double fee= view.showCommissionFee();
-    while (continueSellingOfStocks.equalsIgnoreCase("Y")) {
-      action = new SellStock(portfolioName, ticker, quantity, sellDate, fee);
-      view.displayInput(action.operate(operation));
-      continueSellingOfStocks = view.showSellConfirmation();
+    if(operation.checkWhetherFlexible(portfolioName)) {
+      String ticker = view.showTicker();
+      int quantity = view.showQuantity();
+      String sellDate = view.showSellDate();
+      double fee = view.showCommissionFee();
+      while (continueSellingOfStocks.equalsIgnoreCase("Y")) {
+        action = new SellStock(portfolioName, ticker, quantity, sellDate, fee);
+        view.displayInput(action.operate(operation));
+        continueSellingOfStocks = view.showSellConfirmation();
+      }
+    }
+    else {
+      throw new IllegalArgumentException("The portfolio is inflexible. Cannot modify it");
     }
   }
 
@@ -177,6 +187,7 @@ public class Controller implements IController {
 
   @Override
   public void addStocksHelper(String portfolioName) {
+
     String addStocks = "Y";
     String input = "";
     while (addStocks.equalsIgnoreCase("Y") || addStocks.equalsIgnoreCase("y")) {
@@ -187,6 +198,7 @@ public class Controller implements IController {
         Double commissionFee= view.showCommissionFee();
         action = new AddStockToFlexiblePortfolio(portfolioName, ticker, quantity, buyDate, commissionFee);
       } else {
+        // lock portfolio
         String ticker = view.showTicker();
         int quantity = view.showQuantity();
         action = new AddStockToPortfolio(portfolioName, ticker, quantity);
@@ -200,18 +212,28 @@ public class Controller implements IController {
   @Override
   public void addStocksToFlexiblePortfolioHelper() {
     String portfolioName = view.showEnterNewPortfolioName();
-    addStocksHelper(portfolioName);
+    if(operation.checkWhetherFlexible(portfolioName)) {
+      addStocksHelper(portfolioName);
+    }
+    else {
+      throw new IllegalArgumentException("The portfolio is inflexible. Cannot modify it");
+    }
   }
 
   @Override
   public void showGraph() {
     String portfolioName = view.showEnterNewPortfolioName();
-    String startDate= view.showGraphStartDate();
-    String endDate= view.showGraphEndDate();
-    //TreeMap<String, Integer> map = operation.getGraph(portfolioName, "2016-11-01", "2022-02-10");
-    TreeMap<String, Integer> map = operation.getGraph(portfolioName, startDate, endDate);
-    //System.out.println(map);
-    view.showLineChart(map,portfolioName,startDate,endDate,operation.getLineChartScale());
+    if(operation.checkWhetherFlexible(portfolioName)) {
+      String startDate = view.showGraphStartDate();
+      String endDate = view.showGraphEndDate();
+      //TreeMap<String, Integer> map = operation.getGraph(portfolioName, "2016-11-01", "2022-02-10");
+      TreeMap<String, Integer> map = operation.getGraph(portfolioName, startDate, endDate);
+      //System.out.println(map);
+      view.showLineChart(map, portfolioName, startDate, endDate, operation.getLineChartScale());
+    }
+    else{
+      throw new IllegalArgumentException("Operation not supported for inflexible portfolios");
+    }
   }
 
   @Override
