@@ -31,7 +31,8 @@ public interface IFlexiblePortfolio {
    * @param date date of purchase
    * @param fee commission fee for the transaction
    */
-  void buyStock(String portfolioName, String ticker, int quantity, double price, String date, double fee);
+  void buyStock(String portfolioName, String ticker, int quantity,
+      double price, String date, double fee);
 
   /**
    * A method to perform sell operation.
@@ -42,7 +43,8 @@ public interface IFlexiblePortfolio {
    * @param date date of selling
    * @param fee commission fee for the transaction
    */
-  void sellStock(String portfolioName, String ticker, int quantity, double price, String date, double fee);
+  void sellStock(String portfolioName, String ticker, int quantity,
+      double price, String date, double fee);
 
   /**
    * A method to calculate cost basis of a portfolio for a given date.

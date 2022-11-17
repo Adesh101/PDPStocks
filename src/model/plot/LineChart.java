@@ -12,6 +12,9 @@ import java.util.TreeMap;
 import model.stocks.IStocks;
 import model.stocks.Stocks;
 
+/**
+ * Class to implement line chart.
+ */
 public class LineChart implements ILineChart {
 
   IStocks stocks;
@@ -19,7 +22,7 @@ public class LineChart implements ILineChart {
 
   public LineChart() {
     stocks = new Stocks();
-    scale=0;
+    scale = 0;
   }
 
   @Override
@@ -96,7 +99,7 @@ public class LineChart implements ILineChart {
       startDate = simpleDateFormat.format(sDate);
       differenceInDays--;
     }
-    this.scale=maxValue/10;
+    this.scale = maxValue / 10;
     return getCount(map, maxValue / 10);
   }
 
@@ -116,7 +119,7 @@ public class LineChart implements ILineChart {
       startDate = simpleDateFormat.format(sDate);
       noOfWeeks--;
     }
-    this.scale=maxValue/10;
+    this.scale = maxValue / 10;
     return getCount(map, maxValue / 10);
   }
 
@@ -140,7 +143,7 @@ public class LineChart implements ILineChart {
       keyValue = "";
       noOfMonths--;
     }
-    this.scale=maxValue/10;
+    this.scale = maxValue / 10;
     return getCount(map, maxValue / 10);
   }
 
@@ -165,7 +168,7 @@ public class LineChart implements ILineChart {
       keyValue = "";
       noOfMonths--;
     }
-    this.scale=maxValue/10;
+    this.scale = maxValue / 10;
     return getCount(map, maxValue / 10);
   }
 
@@ -189,7 +192,7 @@ public class LineChart implements ILineChart {
       keyValue = "";
       noOfYears--;
     }
-    this.scale=maxValue/10;
+    this.scale = maxValue / 10;
     return getCount(map, maxValue / 10);
   }
 
@@ -269,7 +272,7 @@ public class LineChart implements ILineChart {
   }
 
   @Override
-  public int scale(){
+  public int scale() {
     return scale;
   }
 }

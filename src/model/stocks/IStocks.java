@@ -4,31 +4,37 @@ package model.stocks;
  * Interface for the Stock class.
  */
 public interface IStocks {
+
   /**
    * This method will fetch the stock data for a particular ticker.
+   *
    * @param: ticker
    * @return: string array with stock data
    */
   String[] callStockAPI(String ticker, String date);
 
+  /**
+   * Method to check if the day is Saturday/Sunday.
+   *
+   * @param: date
+   * @return: string value
+   */
   String isWeekend(String date);
 
+  /**
+   * Method to update files.
+   *
+   * @param: file
+   */
   void updateFile(String file);
 
+  /**
+   * Method to get price by date.
+   *
+   * @param: ticker
+   * @param: date
+   * @return: price
+   */
   double getPriceByDate(String ticker, String date);
 
-//
-//  /**
-//   * This method will fetch the current price for a particular ticker.
-//   * @param: ticker
-//   * @return: price of the stock
-//   */
-//  double getStockCurrentPrice(String ticker);
-//
-//  /**
-//   * This method will fetch the current price for a particular ticker at a current date.
-//   * @param: ticker
-//   * @return: value of a stock at the given date
-//   */
-//  double getStockCurrentPriceByDate(String ticker);
 }

@@ -18,7 +18,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class csvFiles implements fileHandling {
+/**
+ * Class to store csvFiles.
+ */
+public class CsvFiles implements FileHandling {
 
   @Override
   public boolean checkLocalData(String ticker) {
@@ -37,7 +40,7 @@ public class csvFiles implements fileHandling {
     String[] tempData = new String[20];
     try {
       BufferedReader br = new BufferedReader(new FileReader("./data/" + ticker + ".csv"));
-      while((line = br.readLine()) != null) {
+      while ((line = br.readLine()) != null) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date dt = sdf.parse(date);
         sdf.applyPattern("dd-MM-yyyy");
@@ -48,7 +51,7 @@ public class csvFiles implements fileHandling {
         }
       }
     } catch (Exception ex) {
-      System.out.println(ex.getMessage());;
+      System.out.println(ex.getMessage());
     }
     return tempData;
   }
@@ -73,14 +76,13 @@ public class csvFiles implements fileHandling {
     String line = "";
     try {
       BufferedReader br = new BufferedReader(new FileReader("./sticker/stickers.txt"));
-      while((line = br.readLine()) != null) {
+      while ((line = br.readLine()) != null) {
         if (line.equals(ticker)) {
           return true;
         }
       }
     } catch (Exception ex) {
       return false;
-//      System.out.println(ex.getMessage());;
     }
     return false;
   }
@@ -104,10 +106,10 @@ public class csvFiles implements fileHandling {
     String date = "";
     try {
       BufferedReader br = new BufferedReader(new FileReader("./data/" + file + ".csv"));
-      while((currentLine = br.readLine()) != null) {
+      while ((currentLine = br.readLine()) != null) {
         if (!currentLine.contains("timestamp") && !currentLine.equals("")) {
           date = currentLine.split(",")[0];
-          if(!Character.isDigit(date.charAt(2))) {
+          if (!Character.isDigit(date.charAt(2))) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             Date dt = sdf.parse(date);
             sdf.applyPattern("yyyy-MM-dd");
@@ -118,7 +120,7 @@ public class csvFiles implements fileHandling {
         }
       }
     } catch (Exception ex) {
-      System.out.println(ex.getMessage());;
+      System.out.println(ex.getMessage());
     }
     return date;
   }
@@ -145,48 +147,48 @@ public class csvFiles implements fileHandling {
       cal1.setTime(new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000)));
     }
 
-      return (cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) ||
-          cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) &&
-        cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+    return (cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
+        || cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR))
+        && cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
   }
 
   @Override
   public void writeToCSV(String portfolioName,
       HashMap<String, HashMap<String, HashMap<String, List<String>>>> map, String portfolioType) {
-    String CSV_SEPARATOR = ",";
+    String csvSeparator = ",";
     try {
       BufferedWriter bw = new BufferedWriter(
           new OutputStreamWriter(new FileOutputStream("./res/" + portfolioName + ".csv"), "UTF-8"));
       for (String individualPortfolioName : map.keySet()) {
         StringBuffer oneLine = new StringBuffer();
         oneLine.append("Portfolio Type");
-        oneLine.append(CSV_SEPARATOR);
+        oneLine.append(csvSeparator);
         oneLine.append(portfolioType);
         oneLine.append("\n");
         oneLine.append("Portfolio Name");
-        oneLine.append(CSV_SEPARATOR);
+        oneLine.append(csvSeparator);
         oneLine.append(portfolioName);
         oneLine.append("\n");
         for (String date : map.get(individualPortfolioName).keySet()) {
           oneLine.append("Date");
-          oneLine.append(CSV_SEPARATOR);
+          oneLine.append(csvSeparator);
           oneLine.append(date);
           oneLine.append("\n");
           oneLine.append("Stock");
-          oneLine.append(CSV_SEPARATOR);
+          oneLine.append(csvSeparator);
           oneLine.append("Quantity");
-          oneLine.append(CSV_SEPARATOR);
+          oneLine.append(csvSeparator);
           oneLine.append("Price");
-          oneLine.append(CSV_SEPARATOR);
+          oneLine.append(csvSeparator);
           oneLine.append("Total");
-          oneLine.append(CSV_SEPARATOR);
+          oneLine.append(csvSeparator);
           oneLine.append("\n");
           for (String stock : map.get(individualPortfolioName).get(date).keySet()) {
             oneLine.append(stock);
-            oneLine.append(CSV_SEPARATOR);
+            oneLine.append(csvSeparator);
             for (String metaData : map.get(individualPortfolioName).get(date).get(stock)) {
               oneLine.append(metaData);
-              oneLine.append(CSV_SEPARATOR);
+              oneLine.append(csvSeparator);
             }
             oneLine.append("\n");
           }
@@ -224,15 +226,16 @@ public class csvFiles implements fileHandling {
   }
 
   @Override
-  public HashMap<String, HashMap<String, HashMap<String, List<String>>>> readFromFile(String fileName) {
+  public HashMap<String, HashMap<String, HashMap<String, List<String>>>> readFromFile(
+      String fileName) {
     String line = "";
     String splitBy = ",";
     StringBuilder input = new StringBuilder();
     HashMap<String, HashMap<String, HashMap<String, List<String>>>> map = new HashMap<>();
     try {
       BufferedReader br = new BufferedReader(new FileReader(fileName));
-      while ((line = br.readLine()) != null) {   //returns a Boolean value
-        String[] portfolioNames = line.split(splitBy);    // use comma as separator
+      while ((line = br.readLine()) != null) {
+        String[] portfolioNames = line.split(splitBy);
         if (portfolioNames.length == 2) {
           if (portfolioNames[1].equals("Flexible") || portfolioNames[1].equals("Inflexible")) {
             while ((line = br.readLine()) != null) {
@@ -252,14 +255,14 @@ public class csvFiles implements fileHandling {
     return map;
   }
 
-  private HashMap<String, HashMap<String, HashMap<String, List<String>>>> flexibleHelper(String fileName, String input) {
+  private HashMap<String, HashMap<String, HashMap<String, List<String>>>> flexibleHelper(
+      String fileName, String input) {
     String portfolioName = "";
     String date = "";
     String ticker = "";
     input = input.replaceAll(",,,", ",");
     input = input.replaceAll(",,", ",");
     HashMap<String, HashMap<String, HashMap<String, List<String>>>> map = new HashMap<>();
-    //First check whether portfolio is flexible or inflexible and then call the respective functions.
     String[] createPortfolio = input.split(",");
     for (int i = 0; i < createPortfolio.length; ) {
       if (createPortfolio[i].equals("Portfolio Name")) {
@@ -272,7 +275,7 @@ public class csvFiles implements fileHandling {
         map.get(portfolioName).put(date, new HashMap<String, List<String>>());
       } else if (createPortfolio[i].equals("Stock")) {
         i += 4;
-        while(!createPortfolio[i].equals("Date") || i > createPortfolio.length) {
+        while (!createPortfolio[i].equals("Date") || i > createPortfolio.length) {
           ticker = createPortfolio[i];
           map.get(portfolioName).get(date).put(ticker, new ArrayList<String>());
           i++;
@@ -281,10 +284,11 @@ public class csvFiles implements fileHandling {
           map.get(portfolioName).get(date).get(ticker).add(1, createPortfolio[i]);
           i++;
           map.get(portfolioName).get(date).get(ticker).add(2, createPortfolio[i]);
-          if (i+1 < createPortfolio.length)
+          if (i + 1 < createPortfolio.length) {
             i++;
-          else
+          } else {
             break;
+          }
         }
       } else {
         i++;

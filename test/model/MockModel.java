@@ -40,12 +40,6 @@ public class MockModel implements IOperation {
     return 0;
   }
 
-//  @Override
-//  public double getCurrentPrice(String ticker) {
-//    log.append("TICKER: " + ticker + "\n");
-//    return 0;
-//  }
-
   @Override
   public boolean checkPortfolioAlreadyExists(String name) {
     log.append("PORTFOLIO NAME: " + name + "\n");
@@ -86,12 +80,6 @@ public class MockModel implements IOperation {
     return null;
   }
 
-//  @Override
-//  public double callStockAPIByDateHelper(HashMap<String, List<String>> map, String date) {
-//    log.append("MAP: " + map + " " + "DATE: " + date + "\n");
-//    return 0;
-//  }
-
   @Override
   public String getPortfolioComposition(String portfolioName) {
     log.append("PORTFOLIO COMPOSITION: \n");
@@ -106,7 +94,7 @@ public class MockModel implements IOperation {
 
   @Override
   public String[] callStockAPI(String ticker, String date) {
-    log.append("STOCK NAME: "+ ticker+" DATE: "+ date+"\n");
+    log.append("STOCK NAME: " + ticker + " DATE: " + date + "\n");
     return new String[0];
   }
 
@@ -117,7 +105,7 @@ public class MockModel implements IOperation {
 
   @Override
   public void createLockedPortfolio(String portfolioName) {
-    log.append("PORTFOLIO NAME: "+ portfolioName+"\n");
+    log.append("PORTFOLIO NAME: " + portfolioName + "\n");
   }
 
   @Override
@@ -128,36 +116,38 @@ public class MockModel implements IOperation {
 
   @Override
   public boolean checkWhetherFlexible(String portFolioName) {
-    log.append("PORTFOLIO NAME: "+ portFolioName+"\n");
+    log.append("PORTFOLIO NAME: " + portFolioName + "\n");
     return true;
   }
 
   @Override
   public boolean checkWhetherInflexible(String portFolioName) {
-    log.append("PORTFOLIO NAME: "+portFolioName+"\n");
+    log.append("PORTFOLIO NAME: " + portFolioName + "\n");
     return true;
   }
 
   @Override
   public void getFlexibleMap() {
-
+    log.append("Flexible map");
   }
 
   @Override
   public void getInflexibleMap() {
-
+    log.append("Inflexible map.");
   }
 
   @Override
   public void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity,
       double price, String date, double fee) {
-    log.append("PORTFOLIO NAME: "+portfolioName+" STOCK: "+ticker+" QUANTITY: "+ quantity+" PRICE: "+price+" DATE: "+date+" FEE: "+fee+"\n");
+    log.append("PORTFOLIO NAME: " + portfolioName + " STOCK: " + ticker + " QUANTITY: " + quantity
+        + " PRICE: " + price + " DATE: " + date + " FEE: " + fee + "\n");
   }
 
   @Override
   public void addStockToInFlexiblePortfolio(String portfolioName, String ticker, int quantity,
       double price) {
-    log.append("PORTFOLIO NAME: "+portfolioName+" STOCK: "+ticker+" QUANTITY: "+ quantity+" PRICE: "+price+"\n");
+    log.append("PORTFOLIO NAME: " + portfolioName + " STOCK: " + ticker + " QUANTITY: " + quantity
+        + " PRICE: " + price + "\n");
   }
 
   @Override
@@ -171,14 +161,9 @@ public class MockModel implements IOperation {
   }
 
   @Override
-  public void sellStock(String portfolioName, String ticker, int quantity, double price, String date, double fee) {
-
-  }
-
-  @Override
-  public HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap(
-      String portfolioName) {
-    return null;
+  public void sellStock(String portfolioName, String ticker, int quantity, double price,
+      String date, double fee) {
+    log.append("Sell stock.");
   }
 
   @Override

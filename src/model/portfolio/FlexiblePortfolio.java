@@ -6,11 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-import model.operation.IOperation;
-import model.operation.Operation;
 import model.stocks.IStocks;
 import model.stocks.Stocks;
 
+/**
+ * Class for flexible portfolio.
+ */
 public class FlexiblePortfolio implements IFlexiblePortfolio {
 
   protected HashMap<String, HashMap<String, HashMap<String, List<String>>>> map = new HashMap<>();
@@ -20,6 +21,9 @@ public class FlexiblePortfolio implements IFlexiblePortfolio {
   protected double totalValue;
   protected double commissionFee;
 
+  /**
+   * Constructor for flexible portfolio.
+   */
   public FlexiblePortfolio() {
     this.portfolioName = "";
     this.totalValue = 0;
@@ -74,7 +78,6 @@ public class FlexiblePortfolio implements IFlexiblePortfolio {
 
     } else {
       if (map.get(portfolioName).keySet().size() > 0) {
-
         String prevDate = getPreviousDate(date, portfolioName);
         map.get(portfolioName).put(date, new HashMap<>());
         for (String stock : map.get(portfolioName).get(prevDate).keySet()) {
@@ -105,7 +108,6 @@ public class FlexiblePortfolio implements IFlexiblePortfolio {
           addStockDataHelper(portfolioName, ticker, quantity, price, date, 0);
           this.totalValue = totalValue + (quantity * price) + commissionFee;
         }
-        //addStockDataHelper(portfolioName, ticker, quantity, price, date,0);
       } else {
         map.get(portfolioName).put(date, new HashMap<>());
         addStockDataHelper(portfolioName, ticker, quantity, price, date, 0);
@@ -149,7 +151,7 @@ public class FlexiblePortfolio implements IFlexiblePortfolio {
     List<String> dates = new ArrayList<>();
     ListIterator<String> dateIterator = new ArrayList<String>(strings).listIterator();
     while (dateIterator.hasNext()) {
-      dates.add(dateIterator.next()); // check for last element
+      dates.add(dateIterator.next());
     }
     Collections.sort(dates);
     return dates;
@@ -158,7 +160,6 @@ public class FlexiblePortfolio implements IFlexiblePortfolio {
   private void addStockDataHelper(String portfolioName, String ticker, int quantity, double price,
       String date, int previousQuantity) {
     map.get(portfolioName).get(date).put(ticker, new ArrayList<>());
-
     map.get(portfolioName).get(date).get(ticker).add(String.valueOf(previousQuantity + quantity));
     map.get(portfolioName).get(date).get(ticker).add(String.valueOf(price));
     map.get(portfolioName).get(date).get(ticker).add(String.valueOf(quantity * price));
@@ -236,7 +237,7 @@ public class FlexiblePortfolio implements IFlexiblePortfolio {
       return map.get(name).keySet().iterator().next();
     }
     while (dateIterator.hasNext()) {
-      dates.add(dateIterator.next()); // check for last element
+      dates.add(dateIterator.next());
     }
     Collections.sort(dates);
     if (dates.get(0).equals(currentDate)) {

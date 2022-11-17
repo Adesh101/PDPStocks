@@ -9,12 +9,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import model.filehandling.csvFiles;
+import model.filehandling.CsvFiles;
 
 /**
  * This class is used to handle stock data that we fetch from an API.
  */
 public class Stocks implements IStocks {
+
   /**
    * This method will call the API and update the class attribute with the data.
    *
@@ -22,15 +23,16 @@ public class Stocks implements IStocks {
    * @return: array of string with stock data
    */
   public String[] callStockAPI(String ticker, String date) {
-    csvFiles file = new csvFiles();
+    CsvFiles file = new CsvFiles();
     String apiKey = "FIR1DN0VB7SQ4SGD";
     URL url = null;
 
-    if (date.equals(""))
+    if (date.equals("")) {
       date = isWeekend(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
+    }
 
-    if(file.checkLocalData(ticker)) {
-      date=isWeekend(date);
+    if (file.checkLocalData(ticker)) {
+      date = isWeekend(date);
       return file.readFromLocalData(ticker, date);
     }
 
@@ -81,7 +83,7 @@ public class Stocks implements IStocks {
 
   @Override
   public void updateFile(String file) {
-    csvFiles files = new csvFiles();
+    CsvFiles files = new CsvFiles();
     String apiKey = "FIR1DN0VB7SQ4SGD";
     URL url = null;
 
@@ -119,7 +121,7 @@ public class Stocks implements IStocks {
 
   @Override
   public double getPriceByDate(String ticker, String date) {
-    csvFiles file = new csvFiles();
+    CsvFiles file = new CsvFiles();
     double price = 0;
     try {
       price = Double.parseDouble(file.readFromLocalData(ticker, date)[4]);

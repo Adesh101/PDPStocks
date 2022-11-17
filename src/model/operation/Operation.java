@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.ListIterator;
 import java.util.TreeMap;
-import model.filehandling.csvFiles;
+import model.filehandling.CsvFiles;
 import model.plot.ILineChart;
 import model.portfolio.FlexiblePortfolio;
 import model.portfolio.IFlexiblePortfolio;
@@ -28,10 +28,11 @@ public class Operation implements IOperation {
   protected HashMap<String, HashMap<String, List<String>>> portfolios
       = new HashMap<String, HashMap<String, List<String>>>();
   protected String portfolioName;
-  csvFiles files = new csvFiles();
-  protected HashMap<String, HashMap<String, HashMap<String, List<String>>>> FlexibleMap
+  CsvFiles files = new CsvFiles();
+  protected HashMap<String, HashMap<String, HashMap<String, List<String>>>> flexibleMap
       = new HashMap<String, HashMap<String, HashMap<String, List<String>>>>();
-  protected HashMap<String, HashMap<String, HashMap<String, List<String>>>> InflexibleMap = new HashMap<>();
+  protected HashMap<String, HashMap<String, HashMap<String,
+      List<String>>>> inflexibleMap = new HashMap<>();
   protected double totalValue;
   protected String date;
   protected IStocks stocks;
@@ -104,18 +105,12 @@ public class Operation implements IOperation {
   }
 
   @Override
-  public HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap(
-      String portfolioName) {
-    return null;
-  }
-
-  @Override
   public HashMap<String, Integer> returnPortfolioData(String portfolioName) {
     HashMap<String, Integer> map = new HashMap<>();
-    for (String stockDates : FlexibleMap.get(portfolioName).keySet()) {
-      for (String ticker : FlexibleMap.get(portfolioName).get(stockDates).keySet()) {
+    for (String stockDates : flexibleMap.get(portfolioName).keySet()) {
+      for (String ticker : flexibleMap.get(portfolioName).get(stockDates).keySet()) {
         int quantity = Integer.parseInt(
-            FlexibleMap.get(portfolioName).get(stockDates).get(ticker).get(0));
+            flexibleMap.get(portfolioName).get(stockDates).get(ticker).get(0));
         if (map.containsKey(ticker)) {
           map.put(ticker, map.get(ticker) + quantity);
         } else {
@@ -136,7 +131,7 @@ public class Operation implements IOperation {
       return map.get(name).keySet().iterator().next();
     }
     while (dateIterator.hasNext()) {
-      dates.add(dateIterator.next()); // check for last element
+      dates.add(dateIterator.next());
     }
     Collections.sort(dates);
     if (dates.get(0).equals(currentDate)) {
@@ -177,38 +172,37 @@ public class Operation implements IOperation {
   public String getExistingPortfolios() {
     getFlexibleMap();
     getInflexibleMap();
-    if (FlexibleMap.size() == 0 && InflexibleMap.size() == 0) {
+    if (flexibleMap.size() == 0 && inflexibleMap.size() == 0) {
       throw new IllegalArgumentException("NO AVAILABLE PORTFOLIOS TO DISPLAY.");
     }
     StringBuilder allPortfolios = new StringBuilder();
-    if (FlexibleMap.size() != 0) {
-      allPortfolios.append(getFlexiblePortfolios(FlexibleMap));
+    if (flexibleMap.size() != 0) {
+      allPortfolios.append(getFlexiblePortfolios(flexibleMap));
     }
-    if (InflexibleMap.size() != 0) {
-      allPortfolios.append(getInFlexiblePortfolios(InflexibleMap));
+    if (inflexibleMap.size() != 0) {
+      allPortfolios.append(getInFlexiblePortfolios(inflexibleMap));
     }
     return allPortfolios.toString();
   }
 
   private String getFlexiblePortfolios(
-      HashMap<String, HashMap<String, HashMap<String, List<String>>>> FlexibleMap) {
+      HashMap<String, HashMap<String, HashMap<String, List<String>>>> flexibleMap) {
     StringBuilder allPortfolios = new StringBuilder();
     allPortfolios.append("FLEXIBLE PORTFOLIOS:\n");
-    for (String portfolioNames : FlexibleMap.keySet()) {
+    for (String portfolioNames : flexibleMap.keySet()) {
       allPortfolios.append(portfolioNames + "\n");
     }
     return allPortfolios.toString();
   }
 
   private String getInFlexiblePortfolios(
-      HashMap<String, HashMap<String, HashMap<String, List<String>>>> InflexibleMap) {
+      HashMap<String, HashMap<String, HashMap<String, List<String>>>> inflexibleMap) {
     StringBuilder allPortfolios = new StringBuilder();
     allPortfolios.append("INFLEXIBLE PORTFOLIOS:\n");
-    for (String portfolioNames : InflexibleMap.keySet()) {
+    for (String portfolioNames : inflexibleMap.keySet()) {
       allPortfolios.append(portfolioNames + "\n");
     }
     return allPortfolios.toString();
-
   }
 
   @Override
@@ -216,29 +210,24 @@ public class Operation implements IOperation {
     return files.isTickerValid(ticker);
   }
 
-  @Override
-  public HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap() {
-    return FlexibleMap;
-  }
 
   @Override
   public void writeToCSV(String portfolioName) {
     if (checkWhetherFlexible(portfolioName)) {
-      files.writeToCSV(portfolioName, this.FlexibleMap, "Flexible");
+      files.writeToCSV(portfolioName, this.flexibleMap, "Flexible");
     } else if (checkWhetherInflexible(portfolioName)) {
-      files.writeToCSV(portfolioName, this.InflexibleMap, "Inflexible");
+      files.writeToCSV(portfolioName, this.inflexibleMap, "Inflexible");
     }
   }
 
   @Override
   public String readFromFile(String fileName) {
-    csvFiles files = new csvFiles();
+    CsvFiles files = new CsvFiles();
     if (files.checkMapType("./res/" + fileName + ".csv") == 1) {
-      this.FlexibleMap = files.readFromFile("./res/" + fileName + ".csv");
+      this.flexibleMap = files.readFromFile("./res/" + fileName + ".csv");
       return "PORTFOLIO " + fileName + " SUCCESSFULLY CREATED.";
-    }
-    else if (files.checkMapType("./res/" + fileName + ".csv") == 2) {
-      this.InflexibleMap = files.readFromFile("./res/" + fileName + ".csv");
+    } else if (files.checkMapType("./res/" + fileName + ".csv") == 2) {
+      this.inflexibleMap = files.readFromFile("./res/" + fileName + ".csv");
       return "PORTFOLIO " + fileName + " SUCCESSFULLY CREATED.";
     }
     return "INVALID FILE NAME.";
@@ -267,13 +256,13 @@ public class Operation implements IOperation {
 
   @Override
   public String getPortfolioComposition(String portfolioName) {
-//    if (!checkWhetherFlexible(portfolioName) && !checkWhetherInflexible(portfolioName)) {
-//      throw new IllegalArgumentException("No such portfolio Exists");
-//    }
+    if (!checkWhetherFlexible(portfolioName) && !checkWhetherInflexible(portfolioName)) {
+      throw new IllegalArgumentException("No such portfolio Exists");
+    }
     if (checkWhetherFlexible(portfolioName)) {
-      return getFlexibleComposition(FlexibleMap, portfolioName);
+      return getFlexibleComposition(flexibleMap, portfolioName);
     } else if (checkWhetherInflexible(portfolioName)) {
-      return getFlexibleComposition(InflexibleMap, portfolioName);
+      return getFlexibleComposition(inflexibleMap, portfolioName);
     }
     throw new IllegalArgumentException("ENTER VALID PORTFOLIO NAME.");
   }
@@ -285,7 +274,6 @@ public class Operation implements IOperation {
     Date d = new Date();
     String cdate = dateFormat.format(d);
     cdate = getPreviousDate(map, cdate, name);
-    //String finalString = "";
     sb.append("TICK - QTY \n");
     for (String stockName : map.get(name).get(cdate).keySet()) {
       sb.append(stockName).append(" - ");
@@ -308,7 +296,7 @@ public class Operation implements IOperation {
       if (creationDateMap.get(portfolioName).compareTo(date) > 0) {
         return 0.00;
       }
-      finalValue = getValueByDate(FlexibleMap, portfolioName, date);
+      finalValue = getValueByDate(flexibleMap, portfolioName, date);
     } else if (checkWhetherInflexible(portfolioName)) {
       if (creationDateMap.get(portfolioName).compareTo(date) > 0) {
         throw new IllegalArgumentException("PORTFOLIO DOESN'T EXIST FOR THE GIVEN DATE.");
@@ -316,7 +304,7 @@ public class Operation implements IOperation {
       DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
       Date d = new Date();
       String currentDate = stocks.isWeekend(dateFormat.format(d));
-      finalValue = getValueByDate(InflexibleMap, portfolioName, currentDate);
+      finalValue = getValueByDate(inflexibleMap, portfolioName, currentDate);
     }
     return finalValue;
   }
@@ -332,16 +320,6 @@ public class Operation implements IOperation {
     return portfolioValue;
   }
 
-  //  private double getInFlexibleValueByDate(HashMap<String, HashMap<String, HashMap<String, List<String>>>> InflexibleMap){
-//    double individualValue =0, finalValue=0;
-//    int quantity=0;
-//    for(String string : this.InflexibleMap.get(portfolioName).keySet()){
-//      individualValue = stocks.getPriceByDate(string, date);
-//      quantity = Integer.parseInt(InflexibleMap.get(portfolioName).get(date).get(string).get(0)); // change date
-//      finalValue = finalValue + (individualValue*quantity);
-//    }
-//    return finalValue;
-//  }
   @Override
   public Date yesterdaysDate() {
     Calendar startDate = Calendar.getInstance();
@@ -355,7 +333,7 @@ public class Operation implements IOperation {
   @Override
   public void getFlexibleMap() {
     if (flexiblePortfolio.returnMap().size() != 0) {
-      FlexibleMap = flexiblePortfolio.returnMap();
+      flexibleMap = flexiblePortfolio.returnMap();
     }
   }
 
@@ -367,7 +345,7 @@ public class Operation implements IOperation {
   @Override
   public void getInflexibleMap() {
     if (inflexiblePortfolio.returnMap().size() != 0) {
-      InflexibleMap = inflexiblePortfolio.returnMap();
+      inflexibleMap = inflexiblePortfolio.returnMap();
     }
   }
 
@@ -400,7 +378,7 @@ public class Operation implements IOperation {
       throw new IllegalArgumentException("No such portfolio Exists");
     }
     if (checkWhetherFlexible(portfolioName)) {
-      date = getPreviousDate(FlexibleMap, date, portfolioName);
+      date = getPreviousDate(flexibleMap, date, portfolioName);
     }
     return flexiblePortfolio.costBasisByDate(portfolioName, date);
   }
@@ -409,13 +387,13 @@ public class Operation implements IOperation {
   @Override
   public boolean checkWhetherFlexible(String portfolioName) {
     getFlexibleMap();
-    return FlexibleMap.containsKey(portfolioName);
+    return flexibleMap.containsKey(portfolioName);
   }
 
   @Override
   public boolean checkWhetherInflexible(String portfolioName) {
     getInflexibleMap();
-    return InflexibleMap.containsKey(portfolioName);
+    return inflexibleMap.containsKey(portfolioName);
   }
 
   @Override
@@ -456,21 +434,6 @@ public class Operation implements IOperation {
     }
   }
 
-  //  @Override
-//  public void createFlexiblePortfolio(String portfolioName, String date) {
-//    this.portfolioName=portfolioName;
-//    this.date=date;
-//    portfolio = new FlexiblePortfolio();
-//    portfolio.createPortfolio(portfolioName,date);
-//  }
-//
-//  @Override
-//  public void createLockedPortfolio(String portfolioName, String date) {
-//    this.portfolioName=portfolioName;
-//    this.date=date;
-//    portfolio = new InflexiblePortfolio();
-//    portfolio.createPortfolio(portfolioName,date);
-//  }
   @Override
   public int getLineChartScale() {
     return lineChart.scale();

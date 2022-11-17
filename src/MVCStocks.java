@@ -22,6 +22,7 @@ public class MVCStocks {
 
   /**
    * main method to run the program.
+   *
    * @param: args
    */
   public static void main(String[] args) {
@@ -30,7 +31,7 @@ public class MVCStocks {
     IStocks stocks = new Stocks();
     IInflexiblePortfolio inflexiblePortfolio = new InflexiblePortfolio();
     IFlexiblePortfolio flexiblePortfolio = new FlexiblePortfolio();
-    ILineChart lineChart=new LineChart();
+    ILineChart lineChart = new LineChart();
     IOperation operation = new Operation(inflexiblePortfolio, flexiblePortfolio, stocks, lineChart);
     IView view = new View(new InputStreamReader(System.in), System.out);
     IController controller = new Controller(operation, view);

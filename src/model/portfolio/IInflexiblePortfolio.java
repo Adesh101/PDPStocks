@@ -32,7 +32,7 @@ public interface IInflexiblePortfolio {
   void buyStock(String portfolioName, String ticker, int quantity, double price);
 
   /**
-   * A method to get cost basis
+   * A method to get cost basis.
    * @param portFolioName name of the portfolio
    * @param date date to be queried
    * @return cost basis for the given date
@@ -40,7 +40,7 @@ public interface IInflexiblePortfolio {
   double costBasisByDate(String portFolioName, String date);
 
   /**
-   * A method to calculate portfolio value for a given date
+   * A method to calculate portfolio value for a given date.
    * @param portfolioName portfolio name
    * @param date date
    * @return portfolio value for the given date
@@ -54,7 +54,7 @@ public interface IInflexiblePortfolio {
   HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnMap();
 
   /**
-   * A method to calculate the previous date present in the map
+   * A method to calculate the previous date present in the map.
    * @param currentDate current date
    * @param name name of portfolio
    * @return previous dae present in the map

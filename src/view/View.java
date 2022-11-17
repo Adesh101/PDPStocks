@@ -18,6 +18,7 @@ public class View implements IView {
 
   /**
    * Constructor for View Class.
+   *
    * @param: in
    * @param: out
    * @throws: IllegalArgumentException
@@ -38,6 +39,7 @@ public class View implements IView {
 
   /**
    * Private method to fetch the next input from the user.
+   *
    * @return: input
    * @throws: IllegalArgumentException
    */
@@ -61,8 +63,9 @@ public class View implements IView {
   @Override
   public boolean isValidDate(String input) {
     String dateFormat = "yyyy-MM-dd";
-    if (input.length() != 10)
+    if (input.length() != 10) {
       return false;
+    }
     try {
       DateFormat df = new SimpleDateFormat(dateFormat);
       df.setLenient(false);
@@ -72,6 +75,7 @@ public class View implements IView {
       return false;
     }
   }
+
   @Override
   public void showWelcomeMessage() {
     StringBuilder sb = new StringBuilder();
@@ -121,8 +125,9 @@ public class View implements IView {
       displayInput("ENTER STOCK QUANTITY:");
       String quantity = nextInput();
       try {
-        if(Integer.parseInt(quantity) < 0)
+        if (Integer.parseInt(quantity) < 0) {
           throw new NumberFormatException();
+        }
         int quantityInt = Math.round(Float.parseFloat(quantity));
         return quantityInt;
       } catch (NumberFormatException ex) {
@@ -143,13 +148,14 @@ public class View implements IView {
       displayInput("ENTER Y/N INPUT.");
     }
   }
+
   @Override
-  public String showSellConfirmation(){
+  public String showSellConfirmation() {
     displayInput("ORDER PLACED SUCCESSFULLY!");
     while (true) {
       displayInput("DO YOU WISH TO SELL MORE STOCKS? (Y?N)");
       String confirmation = nextInput();
-      if(confirmation.equalsIgnoreCase("Y") || confirmation.equalsIgnoreCase("N")){
+      if (confirmation.equalsIgnoreCase("Y") || confirmation.equalsIgnoreCase("N")) {
         return confirmation;
       }
       displayInput("ENTER Y?N INPUT.");
@@ -158,13 +164,14 @@ public class View implements IView {
 
   @Override
   public double showCommissionFee() {
-    String fee="";
+    String fee = "";
     while (true) {
       displayInput("ENTER COMMISSION FEE:");
       fee = nextInput();
       try {
-        if(Double.parseDouble(fee)<0)
+        if (Double.parseDouble(fee) < 0) {
           throw new IllegalArgumentException();
+        }
         return Double.parseDouble(fee);
       } catch (IllegalArgumentException ex) {
         displayInput("COMMISSION FEE CANNOT BE NEGATIVE");
@@ -240,9 +247,9 @@ public class View implements IView {
     sb.append("1. CREATE FLEXIBLE PORTFOLIO\n");
     sb.append("2. CREATE LOCKED PORTFOLIO");
     displayInput(sb.toString());
-    while (true){
+    while (true) {
       String option = nextInput();
-      if(option.equals("1") || option.equals("2")){
+      if (option.equals("1") || option.equals("2")) {
         return option;
       }
       displayInput("Invalid Input.");
@@ -261,6 +268,7 @@ public class View implements IView {
       }
     }
   }
+
   @Override
   public String showSellDate() {
     while (true) {
@@ -278,23 +286,27 @@ public class View implements IView {
   public void showAddStock() {
     displayInput("ENTER STOCK DETAILS TO BE ADDED TO THE PORTFOLIO.");
   }
+
   @Override
-  public void showLineChart(TreeMap<String, Integer> map, String porfolioName, String startDate, String endDate, int scale){
-    StringBuilder sb=new StringBuilder();
-    sb.append("Performance of Portfolio " +porfolioName+ " From "+startDate+" to "+endDate+"\n" );
-    for (String timestamp : map.keySet()){
-      sb.append(timestamp+": ");
-      for(int i=0;i<map.get(timestamp);i++){
+  public void showLineChart(TreeMap<String, Integer> map, String porfolioName, String startDate,
+      String endDate, int scale) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("Performance of Portfolio " + porfolioName + " From " + startDate + " to " + endDate
+        + "\n");
+    for (String timestamp : map.keySet()) {
+      sb.append(timestamp + ": ");
+      for (int i = 0; i < map.get(timestamp); i++) {
         sb.append("*");
       }
       sb.append("\n");
     }
     sb.append("\n");
-    sb.append("Scale: *= $"+ scale);
+    sb.append("Scale: *= $" + scale);
     displayInput(sb.toString());
   }
+
   @Override
-  public String showGraphStartDate(){
+  public String showGraphStartDate() {
     while (true) {
       displayInput("ENTER START DATE (FORMAT: YYYY-MM-DD):");
       String date = nextInput();
@@ -305,8 +317,9 @@ public class View implements IView {
       }
     }
   }
+
   @Override
-  public String showGraphEndDate(){
+  public String showGraphEndDate() {
     while (true) {
       displayInput("ENTER END DATE (FORMAT: YYYY-MM-DD):");
       String date = nextInput();

@@ -1,15 +1,19 @@
 import java.io.File;
-import model.filehandling.csvFiles;
+import model.filehandling.CsvFiles;
 import model.stocks.IStocks;
 import model.stocks.Stocks;
 
-
+/**
+ * Class to update local stock data.
+ */
 public class UpdateStockData {
 
+  /**
+   * Method to fetch local files and update local data.
+   */
   public void getFiles() {
-    csvFiles file = new csvFiles();
+    CsvFiles file = new CsvFiles();
     IStocks stock = new Stocks();
-    //List<String> listOfFiles = new ArrayList<String>();
     File folder = new File("./data/");
     File[] listOfFiles = folder.listFiles();
 
@@ -18,7 +22,7 @@ public class UpdateStockData {
       if (listOfFile.isFile()) {
         String fileName = listOfFile.getName();
         int pos = fileName.lastIndexOf(".");
-        if (pos > 0 && pos < (fileName.length() - 1)) { // If '.' is not the first or last character.
+        if (pos > 0 && pos < (fileName.length() - 1)) {
           fileName = fileName.substring(0, pos);
         }
         stock.updateFile(fileName);

@@ -72,6 +72,7 @@ public class Controller implements IController {
             break;
           case "8":
             showGraph();
+            break;
           case "9":
             flag = true;
             break;
@@ -114,7 +115,6 @@ public class Controller implements IController {
     String option = view.showPortfolioMenuOption();
     if (option.equals("1")) {
       String portfolioName = view.showEnterNewPortfolioName();
-      //String date = view.showPortfolioCreationDate();
       action = new CreateNewPortfolio(portfolioName);
       view.displayInput(action.operate(operation));
       view.showAddStock();
@@ -148,12 +148,11 @@ public class Controller implements IController {
   @Override
   public void showCostBasisByDateHelper() {
     String portfolioName = view.showEnterNewPortfolioName();
-    if(operation.checkWhetherFlexible(portfolioName)) {
+    if (operation.checkWhetherFlexible(portfolioName)) {
       String costBasisDate = view.showCostBasisDate();
       action = new CostBasisByDate(portfolioName, costBasisDate);
       view.displayInput(action.operate(operation));
-    }
-    else {
+    } else {
       throw new IllegalArgumentException("OPERATION SUPPORTED ONLY FOR FLEXIBLE PORTFOLIOS.");
     }
   }
@@ -162,7 +161,7 @@ public class Controller implements IController {
   public void sellStockHelper() {
     String continueSellingOfStocks = "Y";
     String portfolioName = view.showEnterNewPortfolioName();
-    if(operation.checkWhetherFlexible(portfolioName)) {
+    if (operation.checkWhetherFlexible(portfolioName)) {
       String ticker = view.showTicker();
       int quantity = view.showQuantity();
       String sellDate = view.showSellDate();
@@ -172,8 +171,7 @@ public class Controller implements IController {
         view.displayInput(action.operate(operation));
         continueSellingOfStocks = view.showSellConfirmation();
       }
-    }
-    else {
+    } else {
       throw new IllegalArgumentException("CANNOT MODIFY A LOCKED PORTFOLIO.");
     }
   }
@@ -194,19 +192,13 @@ public class Controller implements IController {
         String ticker = view.showTicker();
         int quantity = view.showQuantity();
         String buyDate = view.showBuyDate();
-        Double commissionFee= view.showCommissionFee();
-        action = new AddStockToFlexiblePortfolio(portfolioName, ticker, quantity, buyDate, commissionFee);
-//        input.append(portfolioName).append("\n");
-//        input.append(buyDate).append(",").append(ticker).append(",").append(quantity).append(",").append(commissionFee);
-//        input.append("\n");
+        Double commissionFee = view.showCommissionFee();
+        action = new AddStockToFlexiblePortfolio(portfolioName, ticker, quantity, buyDate,
+            commissionFee);
       } else {
-        // lock portfolio
         String ticker = view.showTicker();
         int quantity = view.showQuantity();
         action = new AddStockToPortfolio(portfolioName, ticker, quantity);
-//        input.append(portfolioName).append("\n");
-//        input.append(ticker).append(",").append(quantity);
-//        input.append("\n");
       }
       view.displayInput(action.operate(operation));
       addStocks = view.showPostConfirmation();
@@ -217,10 +209,9 @@ public class Controller implements IController {
   @Override
   public void addStocksToFlexiblePortfolioHelper() {
     String portfolioName = view.showEnterNewPortfolioName();
-    if(operation.checkWhetherFlexible(portfolioName)) {
+    if (operation.checkWhetherFlexible(portfolioName)) {
       addStocksHelper(portfolioName);
-    }
-    else {
+    } else {
       throw new IllegalArgumentException("STOCKS CAN ONLY BE ADDED TO A FLEXIBLE PORTFOLIO.");
     }
   }
@@ -228,15 +219,12 @@ public class Controller implements IController {
   @Override
   public void showGraph() {
     String portfolioName = view.showEnterNewPortfolioName();
-    if(operation.checkWhetherFlexible(portfolioName)) {
+    if (operation.checkWhetherFlexible(portfolioName)) {
       String startDate = view.showGraphStartDate();
       String endDate = view.showGraphEndDate();
-      //TreeMap<String, Integer> map = operation.getGraph(portfolioName, "2016-11-01", "2022-02-10");
       TreeMap<String, Integer> map = operation.getGraph(portfolioName, startDate, endDate);
-      //System.out.println(map);
       view.showLineChart(map, portfolioName, startDate, endDate, operation.getLineChartScale());
-    }
-    else{
+    } else {
       throw new IllegalArgumentException("OPERATION NOT SUPPORTED FOR INFLEXIBLE PORTFOLIOS");
     }
   }

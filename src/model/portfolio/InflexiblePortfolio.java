@@ -1,27 +1,30 @@
 package model.portfolio;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import model.stocks.IStocks;
-import model.stocks.Stocks;
 
+/**
+ * Class for inflexible portfolio.
+ */
 public class InflexiblePortfolio implements IInflexiblePortfolio {
+
   protected HashMap<String, HashMap<String, List<String>>> portfolios
       = new HashMap<String, HashMap<String, List<String>>>();
-  protected HashMap<String, HashMap<String, HashMap<String, List<String>>>> map=new HashMap<>();
+  protected HashMap<String, HashMap<String, HashMap<String, List<String>>>> map = new HashMap<>();
   protected String portfolioName;
   protected double totalValue;
   protected String date;
-  public InflexiblePortfolio(){
-    this.totalValue=0;
-    this.portfolioName="";
-    this.date="";
+
+  /**
+   * Constructor for inflexible portfolio.
+   */
+  public InflexiblePortfolio() {
+    this.totalValue = 0;
+    this.portfolioName = "";
+    this.date = "";
   }
 
   @Override
@@ -34,11 +37,12 @@ public class InflexiblePortfolio implements IInflexiblePortfolio {
             "PORTFOLIO ALREADY PRESENT. ADD STOCKS.");
       }
     }
-    this.date=date;
+    this.date = date;
     this.portfolioName = portfolioName;
     this.map.put(portfolioName, new HashMap<>());
     this.map.get(portfolioName).put(date, new HashMap<>());
   }
+
   @Override
   public boolean checkPortfolioAlreadyExists(String name) {
     return map.containsKey(name);
@@ -50,11 +54,14 @@ public class InflexiblePortfolio implements IInflexiblePortfolio {
       throw new IllegalArgumentException("Enter valid portfolio name.");
     }
     if (map.get(portfolioName).get(date).containsKey(ticker)) {
-      int existingNoOfStocks = Integer.parseInt(map.get(portfolioName).get(date).get(ticker).get(0));
+      int existingNoOfStocks = Integer.parseInt(
+          map.get(portfolioName).get(date).get(ticker).get(0));
       map.get(portfolioName).get(date).get(ticker)
           .set(0, String.valueOf(existingNoOfStocks + quantity));
-      double existingPrice = Double.parseDouble(map.get(portfolioName).get(date).get(ticker).get(1));
-      map.get(portfolioName).get(date).get(ticker).set(1, String.valueOf((existingPrice + price) / 2));
+      double existingPrice = Double.parseDouble(
+          map.get(portfolioName).get(date).get(ticker).get(1));
+      map.get(portfolioName).get(date).get(ticker)
+          .set(1, String.valueOf((existingPrice + price) / 2));
       double existingTotalStockValue = Double.parseDouble(
           map.get(portfolioName).get(date).get(ticker).get(2));
       map.get(portfolioName).get(date).get(ticker)
@@ -76,7 +83,7 @@ public class InflexiblePortfolio implements IInflexiblePortfolio {
 
   @Override
   public double portfolioValue(String portfolioName, String date) {
-return 0;
+    return 0;
   }
 
   @Override
@@ -90,22 +97,23 @@ return 0;
   }
 
   @Override
-  public String getPreviousDate(String currentDate, String name){
-    List<String> dates=new ArrayList<>();
-    ListIterator<String> dateIterator = new ArrayList<String>(map.get(name).keySet()).listIterator();
-    if(map.get(name).keySet().size()==1){
+  public String getPreviousDate(String currentDate, String name) {
+    List<String> dates = new ArrayList<>();
+    ListIterator<String> dateIterator = new ArrayList<String>(
+        map.get(name).keySet()).listIterator();
+    if (map.get(name).keySet().size() == 1) {
       return map.get(name).keySet().iterator().next();
     }
-    while (dateIterator.hasNext()){
+    while (dateIterator.hasNext()) {
       dates.add(dateIterator.next()); // check for last element
     }
     Collections.sort(dates);
-    if(dates.get(0).equals(currentDate)){
+    if (dates.get(0).equals(currentDate)) {
       return currentDate;
     }
-    for(int i=1;i<map.get(name).keySet().size();i++){
-      if(dates.get(i).equals(currentDate)){
-        return dates.get(i-1);
+    for (int i = 1; i < map.get(name).keySet().size(); i++) {
+      if (dates.get(i).equals(currentDate)) {
+        return dates.get(i - 1);
       }
     }
     return "";

@@ -39,12 +39,6 @@ public interface IOperation {
    */
   int getMapSize(String portfolioName);
 
-//  /**
-//   * A method that gives the current price of the stock.
-//   * @return:  the price in double
-//   * @param: ticker symbol of the stock whose price needs to be fetched
-//   */
-//  double getCurrentPrice(String ticker);
 
   /**
    * A method to check whether a portfolio already exists.
@@ -59,8 +53,6 @@ public interface IOperation {
    * @param: ticker stock of the symbol
    */
   boolean isTickerValid(String ticker);
-
-  HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap();
 
   /**
    * A method to write the portfolio data to a csv file.
@@ -87,13 +79,6 @@ public interface IOperation {
    */
   HashMap<String, HashMap<String, List<String>>> getPortfolioMap();
 
-//  /**
-//   * A method to fetch a particular portfolio value on a given date.
-//   * @param: map
-//   * @param: date
-//   * @return: value of portfolio
-//   */
-//  double callStockAPIByDateHelper(HashMap<String, List<String>> map, String date);
 
   /**
    * Fetches the data of a particular portfolio.
@@ -110,28 +95,134 @@ public interface IOperation {
    */
   double getPortfolioByDate(String portfolioName, String date);
 
+  /**
+   * Method to fetch API data.
+   * @param: ticker
+   * @param: date
+   * @return: string array
+   */
   String[] callStockAPI(String ticker, String date);
+
+  /**
+   * Method to create flexible portfolio.
+   * @param: portfolioName
+   * @param: date
+   */
   void createFlexiblePortfolio(String portfolioName, String date);
+
+  /**
+   * Method to create locked portfolio.
+   * @param: portfolioName
+   */
   void createLockedPortfolio(String portfolioName);
+
+  /**
+   * Method to check yesterday's date.
+   * @return: date
+   */
   Date yesterdaysDate();
+
+  /**
+   * Method to check flexible portfolio.
+   * @param: portFolioName
+   * @return: true/false value
+   */
   boolean checkWhetherFlexible(String portFolioName);
+
+  /**
+   * Method to check inflexible portfolio.
+   * @param: portFolioName
+   * @return: inflexible portfolio
+   */
   boolean checkWhetherInflexible(String portFolioName);
+
+  /**
+   * Method to check flexible map.
+   */
   void getFlexibleMap();
+
+  /**
+   * Method to check inflexible map.
+   */
   void getInflexibleMap();
-  void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity, double price, String date,double fee);
+
+  /**
+   * Method to add stock.
+   * @param: portfolioName
+   * @param: ticker
+   * @param: quantity
+   * @param: price
+   * @param: date
+   * @param: fee
+   */
+  void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity,
+      double price, String date,double fee);
+
+  /**
+   * Method to add stock.
+   * @param: portfolioName
+   * @param: ticker
+   * @param: quantity
+   * @param: price
+   */
   void addStockToInFlexiblePortfolio(String portfolioName, String ticker, int quantity,
       double price);
-  double costBasisByDate(String portfolioName, String date);
-  int getFlexibleMapSize();
-  void sellStock(String portfolioName, String ticker, int quantity, double price, String date, double fee);
-  HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap(String portfolioName);
 
+  /**
+   * Method to check cost basis.
+   * @param: portfolioName
+   * @param: date
+   * @return: cost basis map
+   */
+  double costBasisByDate(String portfolioName, String date);
+
+  /**
+   * Method to get flexible map size.
+   * @return: map size
+   */
+  int getFlexibleMapSize();
+
+  /**
+   * Method to sell stock.
+   * @param: portfolioName
+   * @param: ticker
+   * @param: quantity
+   * @param: price
+   * @param: date
+   * @param: fee
+   */
+  void sellStock(String portfolioName, String ticker, int quantity,
+      double price, String date, double fee);
+
+  /**
+   * Method to return portfolio data.
+   * @param: portfolioName
+   * @return: portfolio data
+   */
   HashMap<String, Integer> returnPortfolioData(String portfolioName);
 
-  public String getPreviousDate(HashMap<String, HashMap<String, HashMap<String, List<String>>>> map, String currentDate, String name);
-  TreeMap<String, Integer> getGraph(String portfolioName, String startDate, String endDate);
-  int getLineChartScale();
+  /**
+   * Method to fetch previous date.
+   * @param: map
+   * @param: currentDate
+   * @param: name
+   * @return: get previous date
+   */
+  public String getPreviousDate(HashMap<String, HashMap<String, HashMap<String, List<String>>>> map,
+      String currentDate, String name);
 
-//  void writeToCSVFlexible(String name);
-//  void writeToCSVInflexible(String name);
+  /**
+   * Method to store graph data.
+   * @param: portfolioName
+   * @param: startDate
+   * @param: endDate
+   * @return: graph data
+   */
+  TreeMap<String, Integer> getGraph(String portfolioName, String startDate, String endDate);
+
+  /**
+   * Method to fetch line chart.
+   * @return: line chart
+   */
+  int getLineChartScale();
 }
