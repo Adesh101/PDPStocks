@@ -160,8 +160,9 @@ public class Controller implements IController {
     String ticker = view.showTicker();
     int quantity = view.showQuantity();
     String sellDate = view.showSellDate();
+    double fee= view.showCommissionFee();
     while (continueSellingOfStocks.equalsIgnoreCase("Y")) {
-      action = new SellStock(portfolioName, ticker, quantity, sellDate);
+      action = new SellStock(portfolioName, ticker, quantity, sellDate, fee);
       view.displayInput(action.operate(operation));
       continueSellingOfStocks = view.showSellConfirmation();
     }
@@ -183,7 +184,8 @@ public class Controller implements IController {
         String ticker = view.showTicker();
         int quantity = view.showQuantity();
         String buyDate = view.showBuyDate();
-        action = new AddStockToFlexiblePortfolio(portfolioName, ticker, quantity, buyDate);
+        Double commissionFee= view.showCommissionFee();
+        action = new AddStockToFlexiblePortfolio(portfolioName, ticker, quantity, buyDate, commissionFee);
       } else {
         String ticker = view.showTicker();
         int quantity = view.showQuantity();
@@ -204,8 +206,12 @@ public class Controller implements IController {
   @Override
   public void showGraph() {
     String portfolioName = view.showEnterNewPortfolioName();
-    TreeMap<String, Integer> map = operation.getGraph(portfolioName, "2016-11-01", "2022-02-10");
-    System.out.println(map);
+    String startDate= view.showGraphStartDate();
+    String endDate= view.showGraphEndDate();
+    //TreeMap<String, Integer> map = operation.getGraph(portfolioName, "2016-11-01", "2022-02-10");
+    TreeMap<String, Integer> map = operation.getGraph(portfolioName, startDate, endDate);
+    //System.out.println(map);
+    view.showLineChart(map,portfolioName,startDate,endDate,operation.getLineChartScale());
   }
 
   @Override

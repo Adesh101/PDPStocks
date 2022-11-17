@@ -118,17 +118,19 @@ public interface IOperation {
   boolean checkWhetherInflexible(String portFolioName);
   void getFlexibleMap();
   void getInflexibleMap();
-  void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity, double price, String date);
+  void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity, double price, String date,double fee);
   void addStockToInFlexiblePortfolio(String portfolioName, String ticker, int quantity,
       double price);
   double costBasisByDate(String portfolioName, String date);
   int getFlexibleMapSize();
-  void sellStock(String portfolioName, String ticker, int quantity, double price, String date);
+  void sellStock(String portfolioName, String ticker, int quantity, double price, String date, double fee);
   HashMap<String, HashMap<String, HashMap<String, List<String>>>> returnPortfoliosMap(String portfolioName);
 
   HashMap<String, Integer> returnPortfolioData(String portfolioName);
 
+  public String getPreviousDate(HashMap<String, HashMap<String, HashMap<String, List<String>>>> map, String currentDate, String name);
   TreeMap<String, Integer> getGraph(String portfolioName, String startDate, String endDate);
+  int getLineChartScale();
 
 //  void writeToCSVFlexible(String name);
 //  void writeToCSVInflexible(String name);

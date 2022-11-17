@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 
 /**
@@ -417,9 +418,42 @@ public class View implements IView {
     displayInput("ENTER STOCK DETAILS TO BE ADDED TO THE PORTFOLIO.");
   }
   @Override
-  public void showLineChart(String [][] data){
-
-
-
+  public void showLineChart(TreeMap<String, Integer> map, String porfolioName, String startDate, String endDate, int scale){
+    StringBuilder sb=new StringBuilder();
+    sb.append("Performance of Portfolio " +porfolioName+ " From "+startDate+" to "+endDate+"\n" );
+    for (String timestamp : map.keySet()){
+      sb.append(timestamp+": ");
+      for(int i=0;i<map.get(timestamp);i++){
+        sb.append("*");
+      }
+      sb.append("\n");
+    }
+    sb.append("\n");
+    sb.append("Scale: *= $"+ scale);
+    displayInput(sb.toString());
+  }
+  @Override
+  public String showGraphStartDate(){
+    while (true) {
+      displayInput("ENTER START DATE (FORMAT: YYYY-MM-DD):");
+      String date = nextInput();
+      if (isValidDate(date)) {
+        return date;
+      } else {
+        displayInput("ENTER DATE IN YYYY-MM-DD FORMAT.");
+      }
+    }
+  }
+  @Override
+  public String showGraphEndDate(){
+    while (true) {
+      displayInput("ENTER END DATE (FORMAT: YYYY-MM-DD):");
+      String date = nextInput();
+      if (isValidDate(date)) {
+        return date;
+      } else {
+        displayInput("ENTER DATE IN YYYY-MM-DD FORMAT.");
+      }
+    }
   }
 }

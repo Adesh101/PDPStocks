@@ -1,5 +1,8 @@
 package view;
 
+import com.sun.source.tree.Tree;
+import java.util.TreeMap;
+
 /**
  * Interface for view class.
  */
@@ -74,5 +77,7 @@ public interface IView {
   String showCostBasisDate();
   String showSellDate();
   void showAddStock();
-  void showLineChart(String[][] data);
+  void showLineChart(TreeMap<String, Integer> map, String porfolioName, String startDate, String endDate, int scale);
+  String showGraphStartDate();
+  String showGraphEndDate();
 }

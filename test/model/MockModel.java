@@ -146,7 +146,7 @@ public class MockModel implements IOperation {
 
   @Override
   public void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity,
-      double price, String date) {
+      double price, String date, double fee) {
 
   }
 
@@ -167,7 +167,7 @@ public class MockModel implements IOperation {
   }
 
   @Override
-  public void sellStock(String portfolioName, String ticker, int quantity, double price, String date) {
+  public void sellStock(String portfolioName, String ticker, int quantity, double price, String date, double fee) {
 
   }
 
@@ -183,7 +183,18 @@ public class MockModel implements IOperation {
   }
 
   @Override
+  public String getPreviousDate(HashMap<String, HashMap<String, HashMap<String, List<String>>>> map,
+      String currentDate, String name) {
+    return null;
+  }
+
+  @Override
   public TreeMap<String, Integer> getGraph(String portfolioName, String startDate, String endDate) {
     return null;
+  }
+
+  @Override
+  public int getLineChartScale() {
+    return 0;
   }
 }

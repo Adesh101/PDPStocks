@@ -30,6 +30,7 @@ public class Stocks implements IStocks {
       date = isWeekend(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
 
     if(file.checkLocalData(ticker)) {
+      date=isWeekend(date);
       return file.readFromLocalData(ticker, date);
     }
 

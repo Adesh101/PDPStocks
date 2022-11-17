@@ -15,9 +15,11 @@ import model.stocks.Stocks;
 public class LineChart implements ILineChart {
 
   IStocks stocks;
+  protected int scale;
 
   public LineChart() {
     stocks = new Stocks();
+    scale=0;
   }
 
   @Override
@@ -32,7 +34,7 @@ public class LineChart implements ILineChart {
       result = daySpan(portfolio, startDate, differenceInDays);
     } else if (differenceInDays > 30 && differenceInMonths < 5) {
       int noOfWeeks = 0;
-      if (differenceInDays % 7 != 0) {
+      if (differenceInDays % 7 != 0) { // change. wrong logic
         noOfWeeks = 1;
       }
       noOfWeeks += differenceInDays / 7;
@@ -42,7 +44,7 @@ public class LineChart implements ILineChart {
     } else if (differenceInMonths > 30 && noOfYears < 5) {
       int noOfMonths = 0;
       if (differenceInMonths % 3 != 0) {
-        noOfMonths = 1;
+        noOfMonths = 1;               // change. wrong logic
       }
       noOfMonths += differenceInMonths / 3;
       result = threeMonthSpan(portfolio, startDate, noOfMonths);
@@ -94,6 +96,7 @@ public class LineChart implements ILineChart {
       startDate = simpleDateFormat.format(sDate);
       differenceInDays--;
     }
+    this.scale=maxValue/10;
     return getCount(map, maxValue / 10);
   }
 
@@ -113,6 +116,7 @@ public class LineChart implements ILineChart {
       startDate = simpleDateFormat.format(sDate);
       noOfWeeks--;
     }
+    this.scale=maxValue/10;
     return getCount(map, maxValue / 10);
   }
 
@@ -136,6 +140,7 @@ public class LineChart implements ILineChart {
       keyValue = "";
       noOfMonths--;
     }
+    this.scale=maxValue/10;
     return getCount(map, maxValue / 10);
   }
 
@@ -160,6 +165,7 @@ public class LineChart implements ILineChart {
       keyValue = "";
       noOfMonths--;
     }
+    this.scale=maxValue/10;
     return getCount(map, maxValue / 10);
   }
 
@@ -183,6 +189,7 @@ public class LineChart implements ILineChart {
       keyValue = "";
       noOfYears--;
     }
+    this.scale=maxValue/10;
     return getCount(map, maxValue / 10);
   }
 
@@ -259,5 +266,10 @@ public class LineChart implements ILineChart {
       System.out.println(e.getMessage());
     }
     return date;
+  }
+
+  @Override
+  public int scale(){
+    return scale;
   }
 }
