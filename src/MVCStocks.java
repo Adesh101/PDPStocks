@@ -2,6 +2,8 @@ import controller.IController;
 import controller.Controller;
 import model.operation.IOperation;
 import model.operation.Operation;
+import model.plot.ILineChart;
+import model.plot.LineChart;
 import model.portfolio.FlexiblePortfolio;
 import model.portfolio.IFlexiblePortfolio;
 import model.portfolio.IInflexiblePortfolio;
@@ -28,7 +30,8 @@ public class MVCStocks {
     IStocks stocks = new Stocks();
     IInflexiblePortfolio inflexiblePortfolio = new InflexiblePortfolio();
     IFlexiblePortfolio flexiblePortfolio = new FlexiblePortfolio();
-    IOperation operation = new Operation(inflexiblePortfolio, flexiblePortfolio, stocks);
+    ILineChart lineChart=new LineChart();
+    IOperation operation = new Operation(inflexiblePortfolio, flexiblePortfolio, stocks, lineChart);
     IView view = new View(new InputStreamReader(System.in), System.out);
     IController controller = new Controller(operation, view);
     controller.operate(operation);

@@ -32,13 +32,13 @@ public class Operation implements IOperation {
       = new HashMap<String, HashMap<String, List<String>>>();
   protected String portfolioName;
   csvFiles files = new csvFiles();
-  ILineChart lineChart = new LineChart();
   protected HashMap<String, HashMap<String, HashMap<String, List<String>>>> FlexibleMap
       = new HashMap<String, HashMap<String, HashMap<String, List<String>>>>();
  protected HashMap<String, HashMap<String, HashMap<String, List<String>>>> InflexibleMap=new HashMap<>();
   protected double totalValue;
   protected String date;
   protected IStocks stocks;
+  protected ILineChart lineChart;
 
   protected HashMap<String,String> creationDateMap = new HashMap<>();
   protected IFlexiblePortfolio flexiblePortfolio;
@@ -52,12 +52,13 @@ public class Operation implements IOperation {
    *
    * @param: stocks
    */
-  public Operation(IInflexiblePortfolio inflexiblePortfolio, IFlexiblePortfolio flexiblePortfolio, IStocks stocks) {
+  public Operation(IInflexiblePortfolio inflexiblePortfolio, IFlexiblePortfolio flexiblePortfolio, IStocks stocks, ILineChart lineChart) {
     this.portfolioName = "";
     this.totalValue = 0;
     this.stocks = stocks;
     this.inflexiblePortfolio = inflexiblePortfolio;
     this.flexiblePortfolio = flexiblePortfolio;
+    this.lineChart=lineChart;
   }
 
   @Override
@@ -442,6 +443,12 @@ public class Operation implements IOperation {
   public void addStockToFlexiblePortfolio(String portfolioName, String ticker, int quantity,
       double price, String date, double fee) {
    // String date=""; // Implement date logic
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+    Date d = new Date();
+    String cdate=dateFormat.format(d);
+    if(creationDateMap.get(portfolioName).compareTo(date)>0 || cdate.compareTo(date)<0){
+      throw new IllegalArgumentException("Date should le after portfolio creation date and before current date");
+    }
     this.portfolioName=portfolioName;
     flexiblePortfolio.buyStock(portfolioName, ticker,quantity,price,date,fee);
   }
@@ -536,7 +543,6 @@ public class Operation implements IOperation {
 //  }
   @Override
   public int getLineChartScale(){
-    ILineChart linechart=new LineChart();
-    return linechart.scale();
+    return lineChart.scale();
   }
 }
