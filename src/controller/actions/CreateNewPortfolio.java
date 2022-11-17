@@ -7,16 +7,14 @@ import model.operation.IOperation;
  */
 public class CreateNewPortfolio implements IActions {
   private String portfolioName;
-  private String date;
 
-  public CreateNewPortfolio(String portfolioName, String date) {
+  public CreateNewPortfolio(String portfolioName) {
     this.portfolioName = portfolioName;
-    this.date=date;
   }
 
   @Override
   public String operate(IOperation operation) {
-    operation.createLockedPortfolio(this.portfolioName,this.date);
+    operation.createLockedPortfolio(this.portfolioName);
     return "Portfolio " + this.portfolioName + " successfully created. \n";
   }
 

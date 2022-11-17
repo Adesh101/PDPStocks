@@ -1,6 +1,8 @@
+Portfolio Type,Inflexible
 Portfolio Name,ABCDEF
+Date,2022-11-17
 Stock,Quantity,Price,Total,
-VZ,10,37.19,371.9,T,10,18.36,183.6,
-Portfolio Name,ABCDEF
-Stock,Quantity,Price,Total,
-META,-4,96.72,-386.88,AAPL,6,138.92,833.52,
+GOOG,100,97.9015,9790.15,
+META,100,112.66,11266.0,
+AMZN,100,95.54,9554.0,
+

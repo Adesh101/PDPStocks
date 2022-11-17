@@ -112,7 +112,7 @@ public interface IOperation {
 
   String[] callStockAPI(String ticker, String date);
   void createFlexiblePortfolio(String portfolioName, String date);
-  void createLockedPortfolio(String portfolioName, String date);
+  void createLockedPortfolio(String portfolioName);
   Date yesterdaysDate();
   boolean checkWhetherFlexible(String portFolioName);
   boolean checkWhetherInflexible(String portFolioName);

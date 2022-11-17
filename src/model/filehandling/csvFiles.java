@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -78,7 +79,8 @@ public class csvFiles implements fileHandling {
         }
       }
     } catch (Exception ex) {
-      System.out.println(ex.getMessage());;
+      return false;
+//      System.out.println(ex.getMessage());;
     }
     return false;
   }
@@ -143,19 +145,24 @@ public class csvFiles implements fileHandling {
       cal1.setTime(new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000)));
     }
 
-      return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+      return (cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) ||
+          cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)) &&
         cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
   }
 
   @Override
   public void writeToCSV(String portfolioName,
-      HashMap<String, HashMap<String, HashMap<String, List<String>>>> map) {
+      HashMap<String, HashMap<String, HashMap<String, List<String>>>> map, String portfolioType) {
     String CSV_SEPARATOR = ",";
     try {
       BufferedWriter bw = new BufferedWriter(
           new OutputStreamWriter(new FileOutputStream("./res/" + portfolioName + ".csv"), "UTF-8"));
       for (String individualPortfolioName : map.keySet()) {
         StringBuffer oneLine = new StringBuffer();
+        oneLine.append("Portfolio Type");
+        oneLine.append(CSV_SEPARATOR);
+        oneLine.append(portfolioType);
+        oneLine.append("\n");
         oneLine.append("Portfolio Name");
         oneLine.append(CSV_SEPARATOR);
         oneLine.append(portfolioName);
@@ -192,5 +199,97 @@ public class csvFiles implements fileHandling {
     } catch (IOException e) {
       System.out.println("");
     }
+  }
+
+  @Override
+  public int checkMapType(String fileName) {
+    String line = "";
+    String splitBy = ",";
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(fileName));
+      while ((line = br.readLine()) != null) {
+        String[] portfolioNames = line.split(splitBy);
+        if (portfolioNames.length == 2) {
+          if (portfolioNames[1].equals("Flexible")) {
+            return 1;
+          } else if (portfolioNames[1].equals("Inflexible")) {
+            return 2;
+          }
+        }
+      }
+    } catch (Exception ex) {
+      return 0;
+    }
+    return 0;
+  }
+
+  @Override
+  public HashMap<String, HashMap<String, HashMap<String, List<String>>>> readFromFile(String fileName) {
+    String line = "";
+    String splitBy = ",";
+    StringBuilder input = new StringBuilder();
+    HashMap<String, HashMap<String, HashMap<String, List<String>>>> map = new HashMap<>();
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(fileName));
+      while ((line = br.readLine()) != null) {   //returns a Boolean value
+        String[] portfolioNames = line.split(splitBy);    // use comma as separator
+        if (portfolioNames.length == 2) {
+          if (portfolioNames[1].equals("Flexible") || portfolioNames[1].equals("Inflexible")) {
+            while ((line = br.readLine()) != null) {
+              input.append(line);
+              input.append(",");
+            }
+            map = flexibleHelper(fileName, input.toString());
+            break;
+          } else {
+            throw new IllegalArgumentException();
+          }
+        }
+      }
+    } catch (Exception ex) {
+      return new HashMap<String, HashMap<String, HashMap<String, List<String>>>>();
+    }
+    return map;
+  }
+
+  private HashMap<String, HashMap<String, HashMap<String, List<String>>>> flexibleHelper(String fileName, String input) {
+    String portfolioName = "";
+    String date = "";
+    String ticker = "";
+    input = input.replaceAll(",,,", ",");
+    input = input.replaceAll(",,", ",");
+    HashMap<String, HashMap<String, HashMap<String, List<String>>>> map = new HashMap<>();
+    //First check whether portfolio is flexible or inflexible and then call the respective functions.
+    String[] createPortfolio = input.split(",");
+    for (int i = 0; i < createPortfolio.length; ) {
+      if (createPortfolio[i].equals("Portfolio Name")) {
+        i++;
+        portfolioName = createPortfolio[i];
+        map.put(portfolioName, new HashMap<String, HashMap<String, List<String>>>());
+      } else if (createPortfolio[i].equals("Date")) {
+        i++;
+        date = createPortfolio[i];
+        map.get(portfolioName).put(date, new HashMap<String, List<String>>());
+      } else if (createPortfolio[i].equals("Stock")) {
+        i += 4;
+        while(!createPortfolio[i].equals("Date") || i > createPortfolio.length) {
+          ticker = createPortfolio[i];
+          map.get(portfolioName).get(date).put(ticker, new ArrayList<String>());
+          i++;
+          map.get(portfolioName).get(date).get(ticker).add(0, createPortfolio[i]);
+          i++;
+          map.get(portfolioName).get(date).get(ticker).add(1, createPortfolio[i]);
+          i++;
+          map.get(portfolioName).get(date).get(ticker).add(2, createPortfolio[i]);
+          if (i+1 < createPortfolio.length)
+            i++;
+          else
+            break;
+        }
+      } else {
+        i++;
+      }
+    }
+    return map;
   }
 }

@@ -115,7 +115,7 @@ public class MockModel implements IOperation {
   }
 
   @Override
-  public void createLockedPortfolio(String portfolioName, String date) {
+  public void createLockedPortfolio(String portfolioName) {
 
   }
 
